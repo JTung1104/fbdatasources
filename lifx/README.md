@@ -14,7 +14,7 @@ Here we will be showing you how to add a LIFX Bulb datasource to your freeboard.
 
 ![step2](images/step2.png)
 
-Choose any name that will help you identify your bulb.
+###Choose any name that will help you identify your bulb.
 
 ###Generate an access token by clicking the link "here" in the description.
 
@@ -36,7 +36,7 @@ Choose any name that will help you identify your bulb.
 
 ###Next, put the name of your bulb exactly as it appears in the app into the Label field.
 
-![label](images/label.png)
+![label](images/label.PNG)
 
 ###Finally, your form should look like this:
 
