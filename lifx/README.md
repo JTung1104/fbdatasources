@@ -2,4 +2,4 @@
 
 First, add a Datasource, and choose LIFX Bulb from the dropdown list.
 
-![step1](/images/step1.png)
+![step1](images/step1.png)
