@@ -18,10 +18,28 @@ Choose any name that will help you identify your bulb.
 
 ###Generate an access token by clicking the link "here" in the description.
 
-It will open a new window which will prompt you to sign into your LIFX account that you created when you installed the LIFX app.
+###It will open a new window which will prompt you to sign into your LIFX account that you created when you installed the LIFX app.
 
 ![step3](images/step3.png)
 
-After you sign in, click on the button "Generate Access Token"
+###After you sign in, click on the button "Generate New Token"
 
 ![step4](images/step4.png)
+
+###That should prompt you to name your token:
+
+![step5](images/step5.png)
+
+###After you name your token, copy your token and paste it in the appropriate field.
+
+![step6](images/step6.png)
+
+###Next, put the name of your bulb exactly as it appears in the app into the Label field.
+
+![label](images/label.png)
+
+###Finally, your form should look like this:
+
+![step7](images/step7.png)
+
+##You are now ready to add some widgets!
