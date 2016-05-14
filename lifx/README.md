@@ -32,9 +32,13 @@ It will open a new window which will prompt you to sign into your LIFX account t
 
 ###After you name your token, copy and paste it in the appropriate field.
 
+This allows freeboard to access the data from your bulbs.
+
 ![step6](images/step6.png)
 
 ###Next, put the name of your bulb exactly as it appears in the app into the Label field.
+
+The label is needed for freeboard to know which bulb you want to query. Labels should be unique, otherwise the first bulb matching the label will be used.
 
 ![label](images/label.PNG)
 
