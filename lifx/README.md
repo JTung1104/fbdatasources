@@ -111,3 +111,9 @@ For the datasource, be sure to choose "color_html".
 You can also add a text widget in order to display the color in rgb.
 
 ![color3](images/color3.png)
+
+Color of light can also be expressed in terms of hue, saturation, brightness, and kelvin.
+
+Use text widgets if you wish to view these datapoints.
+
+##Congratulations! You are now a master of adding LIFX Datasources! 
