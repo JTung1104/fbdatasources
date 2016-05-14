@@ -77,3 +77,17 @@ For the value, first choose the name of your datasource, then choose id. Id in t
 Save.
 
 ![about6](images/about6.png)
+
+Adding text widgets to display the rest of the information in the About pane is the same, so I will not show the steps for the sake of brevity.
+
+###Status
+
+There are two data points that can be displayed using indicator lights: connection and power.
+
+Let's tackle connection first. Add a new pane, name it status, and then add a widget and select indicator light as the type.
+
+![status1](images/status1.png)
+
+Fill out the fields, I recommend using the values below.
+
+![status2](images/status2.png)
