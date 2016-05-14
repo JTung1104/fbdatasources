@@ -38,7 +38,7 @@ This allows freeboard to access the data from your bulbs.
 
 ###Next, put the name of your bulb exactly as it appears in the app into the Label field.
 
-The label is needed for freeboard to know which bulb you want to query. Labels should be unique, otherwise the first bulb matching the label will be used.
+The label is needed for freeboard to know which bulb you want to query. Labels should be unique, otherwise the first bulb matching the label will the datasource. The label of my bulb is "Home Office 1".
 
 ![label](images/label.PNG)
 
@@ -47,3 +47,33 @@ The label is needed for freeboard to know which bulb you want to query. Labels s
 ![step7](images/step7.png)
 
 ##You are now ready to add some widgets!
+
+###First, click on "+ ADD PANE"
+
+You should end up with an empty pane like this:
+
+![about1](images/about1.png)
+
+In this tutorial, we are going to recreate the example dashboard, so my first pane will include information about the bulb.
+
+###Edit the name of your pane
+
+Click on the wrench, fill in the name with Serial Number, and save.
+
+![about2](images/about2.png)
+
+![about3](images/about3.png)
+
+###Add some information from your datasource
+Click on the "+"
+
+![about4](images/about4.png)
+
+Select "Text" as your widget type
+
+![about5](images/about5.png)
+
+For the value, first choose the name of your datasource, then choose id. Id in this case is the same as the serial number.
+Save.
+
+![about6](images/about6.png)
