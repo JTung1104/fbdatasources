@@ -1,8 +1,8 @@
 #How to add a LIFX Datasource
 
-Here we will be showing you how to add a LIFX Bulb datasource to your freeboard.
+Here we will be showing you how to add a LIFX Bulb datasource to your freeboard:
 
-###An example of what your dashboard might look like:
+###An example of what your finished dashboard might look like:
 
 ![dashboard](images/dashboard.png)
 
@@ -14,11 +14,11 @@ Here we will be showing you how to add a LIFX Bulb datasource to your freeboard.
 
 ![step2](images/step2.png)
 
-###Choose any name that will help you identify your bulb.
+Choose any name that will help you identify your bulb.
 
 ###Generate an access token by clicking the link "here" in the description.
 
-###It will open a new window which will prompt you to sign into your LIFX account that you created when you installed the LIFX app.
+It will open a new window which will prompt you to sign into your LIFX account that you created when you installed the LIFX app.
 
 ![step3](images/step3.png)
 
@@ -26,11 +26,11 @@ Here we will be showing you how to add a LIFX Bulb datasource to your freeboard.
 
 ![step4](images/step4.png)
 
-###That should prompt you to name your token:
+###Name your token.
 
 ![step5](images/step5.png)
 
-###After you name your token, copy your token and paste it in the appropriate field.
+###After you name your token, copy and paste it in the appropriate field.
 
 ![step6](images/step6.png)
 
@@ -38,7 +38,7 @@ Here we will be showing you how to add a LIFX Bulb datasource to your freeboard.
 
 ![label](images/label.PNG)
 
-###Finally, your form should look like this:
+###When you're finished, your form should look like this:
 
 ![step7](images/step7.png)
 
