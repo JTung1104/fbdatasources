@@ -88,6 +88,26 @@ Let's tackle connection first. Add a new pane, name it status, and then add a wi
 
 ![status1](images/status1.png)
 
-Fill out the fields, I recommend using the values below.
+Fill out the fields, I recommend using the values below. Connected returns true or false, which will result in the indicator light being on or off.
 
 ![status2](images/status2.png)
+
+Now, let's add power. Here are the settings I used:
+
+![status3](images/status3.png)
+
+###Color
+
+If your bulb is color capable, you can see what color it is giving off with an html widget.
+
+Add a widget and select HTML as the type.
+
+![color1](images/color1.png)
+
+For the datasource, be sure to choose "color_html".
+
+![color2](images/color2.png)
+
+You can also add a text widget in order to display the color in rgb.
+
+![color3](images/color3.png)
