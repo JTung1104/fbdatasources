@@ -12,7 +12,7 @@
       },
       {
         name: "refresh",
-        display_name "Refresh Every",
+        display_name: "Refresh Every",
         type: "number",
         suffix: "seconds",
         default_value: 10
