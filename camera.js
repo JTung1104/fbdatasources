@@ -36,9 +36,13 @@
 
   var nestCamera = function (settings, updateCallback) {
     var self = this,
+        refreshTimer,
+        access_token,
         currentSettings = settings;
 
-    function getAccessToken () {
+    var ref;
+
+    function getData () {
       $.ajax({
         type: "POST",
         url: "https://api.home.nest.com/oauth2/access_token?client_id=6a45d3f5-b753-4ede-9ebb-f445d87ce088&code=" + currentSettings.authorization_code + "&client_secret=ywEKPggAhlKSFg9xxcFI0kock&grant_type=authorization_code",
@@ -50,27 +54,22 @@
         },
         success: function (payload) {
           console.log(payload);
-          self.access_token = payload.access_token;
+          access_token = payload.access_token;
+          var ref = new Firebase('wss://developer-api.nest.com');
+          ref.authWithCustomToken(access_token);
+          ref.on('value', function (snapshot) {
+            console.log(snapshot.val());
+          });
         },
         error: function (xhr, status, error) {
         },
         dataType: "JSON"
       });
-    }
 
-    var ref;
-
-    function getData () {
-      if (typeof self.access_token === "undefined") {
-        getAccessToken();
-        debugger
-      }
-
-      ref = new Firebase('wss://developer-api.nest.com');
-      ref.authWithCustomToken(self.access_token);
-      ref.on('value', function (snapshot) {
-        console.log(snapshot.val());
-      });
+      // if (typeof access_token === "undefined") {
+      //   getAccessToken();
+      //   debugger
+      // }
     }
 
     var refreshTimer;
