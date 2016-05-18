@@ -1,7 +1,7 @@
 (function () {
   freeboard.loadDatasourcePlugin({
-    type_name: "nest_camera",
-    display_name: "Nest Camera",
+    type_name: "nest",
+    display_name: "Nest",
     external_scripts: ["https://cdn.firebase.com/js/client/2.4.2/firebase.js"],
     settings: [
       {
@@ -14,7 +14,7 @@
         name: "access_token",
         display_name: "Access Token",
         type: "text",
-        description: "No need to input anything here."
+        description: "Leave this field blank."
       },
       {
         name: "refresh_time",
@@ -25,7 +25,7 @@
       }
     ],
     newInstance: function (settings, newInstanceCallback, updateCallback) {
-      newInstanceCallback(new nestCamera(settings, updateCallback));
+      newInstanceCallback(new nestDatasource(settings, updateCallback));
     }
   });
 
@@ -40,7 +40,7 @@
     return token;
   }
 
-  var nestCamera = function (settings, updateCallback) {
+  var nestDatasource = function (settings, updateCallback) {
     var self = this,
         refreshTimer,
         currentSettings = settings;
