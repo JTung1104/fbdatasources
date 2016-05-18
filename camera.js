@@ -37,12 +37,9 @@
   var nestCamera = function (settings, updateCallback) {
     var self = this,
         refreshTimer,
-        access_token,
-        ref,
-        onValueChange,
         currentSettings = settings;
 
-    function getData () {
+    function getAccessToken () {
       $.ajax({
         type: "POST",
         url: "https://thingproxy.freeboard.io/fetch/https://api.home.nest.com/oauth2/access_token?client_id=6a45d3f5-b753-4ede-9ebb-f445d87ce088&code=" + currentSettings.authorization_code + "&client_secret=ywEKPggAhlKSFg9xxcFI0kock&grant_type=authorization_code",
@@ -53,38 +50,45 @@
           grant_type: "authorization_code"
         },
         success: function (payload) {
-          access_token = payload.access_token;
-          ref = new Firebase('wss://developer-api.nest.com');
-          ref.authWithCustomToken(access_token);
-          onValueChange = ref.on('value', function (snapshot) {
-            var data = snapshot.val();
-
-            var newData = {
-              access_token: data.metadata.access_token,
-              client_version: data.metadata.client_version
-            };
-
-            var name;
-            Object.keys(data.devices).forEach(function (deviceType) {
-              Object.keys(data.devices[deviceType]).forEach(function (device) {
-                if (data.devices[deviceType][device].name_long) {
-                  newData[data.devices[deviceType][device].name_long] = data.devices[deviceType][device];
-                }
-              });
-            });
-
-            Object.keys(data.structures).forEach(function (structure) {
-              if (data.structures[structure].name) {
-                newData[data.structures[structure].name] = data.structures[structure];
-              }
-            });
-
-            updateCallback(newData);
-          });
+          self.access_token = payload.access_token;
         },
         error: function (xhr, status, error) {
         },
         dataType: "JSON"
+      });
+    }
+
+    function getData () {
+      if (typeof self.access_token === "undefined") {
+        getAccessToken();
+      }
+
+      self.ref = new Firebase('wss://developer-api.nest.com');
+      ref.authWithCustomToken(self.access_token);
+      self.onValueChange = ref.on('value', function (snapshot) {
+        var data = snapshot.val();
+
+        var newData = {
+          access_token: data.metadata.access_token,
+          client_version: data.metadata.client_version
+        };
+
+        var name;
+        Object.keys(data.devices).forEach(function (deviceType) {
+          Object.keys(data.devices[deviceType]).forEach(function (device) {
+            if (data.devices[deviceType][device].name_long) {
+              newData[data.devices[deviceType][device].name_long] = data.devices[deviceType][device];
+            }
+          });
+        });
+
+        Object.keys(data.structures).forEach(function (structure) {
+          if (data.structures[structure].name) {
+            newData[data.structures[structure].name] = data.structures[structure];
+          }
+        });
+
+        updateCallback(newData);
       });
     }
 
@@ -110,8 +114,8 @@
     self.onDispose = function () {
       clearInterval(refreshTimer);
       refreshTimer = undefined;
-      if (ref) {
-        ref.off('value', onValueChange);
+      if (self.ref) {
+        self.ref.off('value', onValueChange);
       }
     };
 
