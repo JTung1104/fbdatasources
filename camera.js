@@ -66,11 +66,11 @@
     }
 
     function getData () {
-      if (currentSettings.access_token === "") {
+      if (typeof currentSettings.access_token === "undefined") {
         getAccessToken();
       } else if (typeof self.ref === "undefined") {
         self.ref = new Firebase('wss://developer-api.nest.com');
-        self.ref.authWithCustomToken(self.access_token);
+        self.ref.authWithCustomToken(currentSettings.access_token);
         self.onValueChange = self.ref.on('value', function (snapshot) {
           var data = snapshot.val();
 
