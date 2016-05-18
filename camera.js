@@ -110,7 +110,9 @@
     self.onDispose = function () {
       clearInterval(refreshTimer);
       refreshTimer = undefined;
-      ref.off('value', onValueChange);
+      if (ref) {
+        ref.off('value', onValueChange);
+      }
     };
 
     createRefreshTimer(currentSettings.refresh_time * 1000);
