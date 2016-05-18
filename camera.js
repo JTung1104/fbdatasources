@@ -109,6 +109,7 @@
     };
 
     self.updateNow = function () {
+      getData();
     };
 
     self.onDispose = function () {
