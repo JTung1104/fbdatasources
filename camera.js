@@ -50,7 +50,7 @@
           grant_type: "authorization_code"
         },
         success: function (payload) {
-          self.access_token = payload.access_token;
+          currentSettings.access_token = payload.access_token;
           getData();
         },
         error: function (xhr, status, error) {
@@ -60,7 +60,7 @@
     }
 
     function getData () {
-      if (typeof self.access_token === "undefined") {
+      if (typeof currentSettings.access_token === "undefined") {
         getAccessToken();
       } else if (typeof self.ref === "undefined") {
         self.ref = new Firebase('wss://developer-api.nest.com');
