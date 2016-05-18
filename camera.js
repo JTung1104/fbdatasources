@@ -66,7 +66,7 @@
     }
 
     function getData () {
-      if (typeof currentSettings.access_token === "undefined") {
+      if (currentSettings.access_token === "") {
         getAccessToken();
       } else if (typeof self.ref === "undefined") {
         self.ref = new Firebase('wss://developer-api.nest.com');
