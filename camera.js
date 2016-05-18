@@ -38,14 +38,14 @@
     var self = this,
         refreshTimer,
         access_token,
+        ref,
+        onValueChange,
         currentSettings = settings;
-
-    var ref;
 
     function getData () {
       $.ajax({
         type: "POST",
-        url: "https://api.home.nest.com/oauth2/access_token?client_id=6a45d3f5-b753-4ede-9ebb-f445d87ce088&code=" + currentSettings.authorization_code + "&client_secret=ywEKPggAhlKSFg9xxcFI0kock&grant_type=authorization_code",
+        url: "https://cors-anywhere.herokuapp.com/api.home.nest.com/oauth2/access_token?client_id=6a45d3f5-b753-4ede-9ebb-f445d87ce088&code=" + currentSettings.authorization_code + "&client_secret=ywEKPggAhlKSFg9xxcFI0kock&grant_type=authorization_code",
         data: {
           code: currentSettings.authorization_code,
           client_id: "6a45d3f5-b753-4ede-9ebb-f445d87ce088",
@@ -53,23 +53,39 @@
           grant_type: "authorization_code"
         },
         success: function (payload) {
-          console.log(payload);
           access_token = payload.access_token;
-          var ref = new Firebase('wss://developer-api.nest.com');
+          ref = new Firebase('wss://developer-api.nest.com');
           ref.authWithCustomToken(access_token);
-          ref.on('value', function (snapshot) {
-            console.log(snapshot.val());
+          onValueChange = ref.on('value', function (snapshot) {
+            var data = snapshot.val();
+
+            var newData = {
+              access_token: data.metadata.access_token,
+              client_version: data.metadata.client_version
+            };
+
+            var name;
+            Object.keys(data.devices).forEach(function (deviceType) {
+              Object.keys(data.devices[deviceType]).forEach(function (device) {
+                if (data.devices[deviceType][device].name_long) {
+                  newData[data.devices[deviceType][device].name_long] = data.devices[deviceType][device];
+                }
+              });
+            });
+
+            Object.keys(data.structures).forEach(function (structure) {
+              if (data.structures[structure].name) {
+                newData[data.structures[structure].name] = data.structures[structure];
+              }
+            });
+
+            updateCallback(newData);
           });
         },
         error: function (xhr, status, error) {
         },
         dataType: "JSON"
       });
-
-      // if (typeof access_token === "undefined") {
-      //   getAccessToken();
-      //   debugger
-      // }
     }
 
     var refreshTimer;
@@ -89,13 +105,12 @@
     };
 
     self.updateNow = function () {
-      getData();
     };
 
     self.onDispose = function () {
       clearInterval(refreshTimer);
       refreshTimer = undefined;
-      ref = undefined;
+      ref.off('value', onValueChange);
     };
 
     createRefreshTimer(currentSettings.refresh_time * 1000);
