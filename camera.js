@@ -123,7 +123,7 @@
       clearInterval(refreshTimer);
       refreshTimer = undefined;
       if (self.ref) {
-        self.ref.off('value', onValueChange);
+        self.ref.off('value', self.onValueChange);
       }
     };
 
