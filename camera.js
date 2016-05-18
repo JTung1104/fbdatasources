@@ -51,6 +51,7 @@
         },
         success: function (payload) {
           self.access_token = payload.access_token;
+          getData();
         },
         error: function (xhr, status, error) {
         },
@@ -61,35 +62,35 @@
     function getData () {
       if (typeof self.access_token === "undefined") {
         getAccessToken();
-      }
+      } else {
+        self.ref = new Firebase('wss://developer-api.nest.com');
+        ref.authWithCustomToken(self.access_token);
+        self.onValueChange = ref.on('value', function (snapshot) {
+          var data = snapshot.val();
 
-      self.ref = new Firebase('wss://developer-api.nest.com');
-      ref.authWithCustomToken(self.access_token);
-      self.onValueChange = ref.on('value', function (snapshot) {
-        var data = snapshot.val();
+          var newData = {
+            access_token: data.metadata.access_token,
+            client_version: data.metadata.client_version
+          };
 
-        var newData = {
-          access_token: data.metadata.access_token,
-          client_version: data.metadata.client_version
-        };
+          var name;
+          Object.keys(data.devices).forEach(function (deviceType) {
+            Object.keys(data.devices[deviceType]).forEach(function (device) {
+              if (data.devices[deviceType][device].name_long) {
+                newData[data.devices[deviceType][device].name_long] = data.devices[deviceType][device];
+              }
+            });
+          });
 
-        var name;
-        Object.keys(data.devices).forEach(function (deviceType) {
-          Object.keys(data.devices[deviceType]).forEach(function (device) {
-            if (data.devices[deviceType][device].name_long) {
-              newData[data.devices[deviceType][device].name_long] = data.devices[deviceType][device];
+          Object.keys(data.structures).forEach(function (structure) {
+            if (data.structures[structure].name) {
+              newData[data.structures[structure].name] = data.structures[structure];
             }
           });
-        });
 
-        Object.keys(data.structures).forEach(function (structure) {
-          if (data.structures[structure].name) {
-            newData[data.structures[structure].name] = data.structures[structure];
-          }
+          updateCallback(newData);
         });
-
-        updateCallback(newData);
-      });
+      }
     }
 
     var refreshTimer;
