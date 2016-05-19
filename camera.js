@@ -44,11 +44,11 @@
     var self = this,
         refreshTimer,
         currentSettings = settings;
-
+        
     function getAccessToken () {
       $.ajax({
         type: "POST",
-        url: "https://thingproxy.freeboard.io/fetch/https://api.home.nest.com/oauth2/access_token?client_id=6a45d3f5-b753-4ede-9ebb-f445d87ce088&code=" + currentSettings.authorization_code + "&client_secret=ywEKPggAhlKSFg9xxcFI0kock&grant_type=authorization_code",
+        url: "https://thingproxy.freeboard.io/fetch/https://api.home.nest.com/oauth2/access_token?client_id=1c018519-6992-43af-a75e-a8645cb9c82e&code=" + currentSettings.authorization_code + "&client_secret=7bFoutPTlsTcC195UfsiZZBCQ&grant_type=authorization_code",
         data: {
           code: currentSettings.authorization_code,
           client_id: "6a45d3f5-b753-4ede-9ebb-f445d87ce088",
