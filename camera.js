@@ -8,7 +8,7 @@
         name: "authorization_code",
         display_name: "Authorization Code",
         type: "text",
-        description: "Your personal authorization code generated from <a href=\"https://home.nest.com/login/oauth2?client_id=6a45d3f5-b753-4ede-9ebb-f445d87ce088&state=" + getCSRFtoken() + "\" target=\"_blank\">here</a>."
+        description: "Your personal authorization code generated from <a href=\"https://home.nest.com/login/oauth2?client_id=1c018519-6992-43af-a75e-a8645cb9c82e&state=" + getCSRFtoken() + "\" target=\"_blank\">here</a>."
       },
       {
         name: "access_token",
@@ -74,7 +74,7 @@
         self.onValueChange = self.ref.on('value', function (snapshot) {
           var data = snapshot.val();
           console.log(data);
-          
+
           var newData = {
             access_token: data.metadata.access_token,
             client_version: data.metadata.client_version
