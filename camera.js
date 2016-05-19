@@ -80,24 +80,29 @@
             client_version: data.metadata.client_version
           };
 
-          var name;
-          Object.keys(data.devices).forEach(function (deviceType) {
-            Object.keys(data.devices[deviceType]).forEach(function (device) {
-              if (data.devices[deviceType][device].name_long) {
-                newData[data.devices[deviceType][device].name_long] = data.devices[deviceType][device];
-              }
-            });
-          });
-
-          Object.keys(data.structures).forEach(function (structure) {
-            if (data.structures[structure].name) {
-              newData[data.structures[structure].name] = data.structures[structure];
-            }
-          });
-
+          unpackDevices(data.devices, newData);
+          unpackStructures(data.structures, newData);
           updateCallback(newData);
         });
       }
+    }
+
+    function unpackDevices (devices, newData) {
+      Object.keys(devices).forEach(function (deviceType) {
+        Object.keys(devices[deviceType]).forEach(function (device) {
+          if (devices[deviceType][device].name_long) {
+            newData[devices[deviceType][device].name_long] = devices[deviceType][device];
+          }
+        });
+      });
+    }
+
+    function unpackStructures (structures, newData) {
+      Object.keys(structures).forEach(function (structure) {
+        if (structures[structure].name) {
+          newData[structures[structure].name] = structures[structure];
+        }
+      });
     }
 
     var refreshTimer;
