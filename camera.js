@@ -92,15 +92,6 @@
         Object.keys(devices[deviceType]).forEach(function (device) {
           if (devices[deviceType][device].name_long) {
             newData[devices[deviceType][device].name_long] = devices[deviceType][device];
-
-            if (
-              deviceType === "cameras" &&
-              devices[deviceType][device].is_public_share_enabled &&
-              typeof devices[deviceType][device].live_stream_html === "undefined"
-            ) {
-              var camera = newData[devices[deviceType][device].name_long];
-              camera.live_stream_html = "<iframe src=\"https://video.nest.com/embedded/live/" + camera.public_share_url.slice(camera.public_share_url.length - 6) + "\" frameborder=\"0\" width=\"100%\" height=\"100%\"></iframe>"
-            }
           }
         });
       });
