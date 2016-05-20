@@ -93,14 +93,19 @@
             newData[devices[deviceType][device].name_long] = devices[deviceType][device];
             if (deviceType === "cameras") {
               var camera = newData[devices[deviceType][device].name_long];
-              camera.last_is_online_change = new Date(camera.last_is_online_change).toLocaleString();
-              camera.last_event.start_time = new Date(camera.last_event.start_time).toLocaleString();
-              camera.last_event.end_time = new Date(camera.last_event.end_time).toLocaleString();
-              camera.last_event.urls_expire_time = new Date(camera.last_event.urls_expire_time).toLocaleString();
+              camera.stream_code = camera.public_share_url.slice(camera.public_share_url.length - 6);
+              formatCameraTime(camera);
             }
           }
         });
       });
+    }
+
+    function formatCameraTime (camera) {
+      camera.last_is_online_change = new Date(camera.last_is_online_change).toLocaleString();
+      camera.last_event.start_time = new Date(camera.last_event.start_time).toLocaleString();
+      camera.last_event.end_time = new Date(camera.last_event.end_time).toLocaleString();
+      camera.last_event.urls_expire_time = new Date(camera.last_event.urls_expire_time).toLocaleString();
     }
 
     function unpackStructures (structures, newData) {
@@ -140,5 +145,45 @@
     };
 
     createRefreshTimer(currentSettings.refresh_time * 1000);
+  };
+
+  freeboard.loadDatasourcePlugin({
+    type_name: "nest_camera",
+    display_name: "Nest Camera",
+    settings: [
+      {
+        name: "stream_code",
+        display_name: "Stream Code",
+        type: "text",
+        description: "Input the stream code from your Nest Datasource exactly as it appears (case sensitive)."
+      }
+    ],
+    newInstance: function (settings, newInstanceCallback, updateCallback) {
+      newInstanceCallback(new nestCameraDatasource(settings, updateCallback));
+    }
+  });
+
+  var nestCameraDatasource = function (settings, updateCallback) {
+    var self = this,
+        currentSettings = settings;
+
+    function getData () {
+      var newData = {
+        live_stream_html: "<iframe src=\"https://video.nest.com/embedded/live/" + currentSettings.stream_code + "\" frameborder=\"0\" width=\"100%\" height=\"100%\"></iframe>"
+      }
+      
+      updateCallback(newData);
+    }
+
+    self.onSettingsChanged = function (newSettings) {
+      currentSettings = newSettings;
+    };
+
+    self.updateNow = function () {
+      getData();
+    };
+
+    self.onDispose = function () {
+    };
   };
 }());
