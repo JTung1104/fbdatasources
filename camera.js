@@ -73,8 +73,7 @@
         self.ref.authWithCustomToken(currentSettings.access_token);
         self.onValueChange = self.ref.on('value', function (snapshot) {
           var data = snapshot.val();
-          console.log(data);
-
+          
           var newData = {
             access_token: data.metadata.access_token,
             client_version: data.metadata.client_version
