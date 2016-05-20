@@ -91,6 +91,13 @@
         Object.keys(devices[deviceType]).forEach(function (device) {
           if (devices[deviceType][device].name_long) {
             newData[devices[deviceType][device].name_long] = devices[deviceType][device];
+            if (deviceType === "cameras") {
+              var camera = newData[devices[deviceType][device].name_long];
+              camera.last_is_online_change = new Date(camera.last_is_online_change).toLocaleString();
+              camera.last_event.start_time = new Date(camera.last_event.start_time).toLocaleString();
+              camera.last_event.end_time = new Date(camera.last_event.end_time).toLocaleString();
+              camera.last_event.urls_expire_time = new Date(camera.last_event.urls_expire_time).toLocaleString();
+            }
           }
         });
       });
