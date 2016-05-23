@@ -95,10 +95,26 @@
               var camera = newData[devices[deviceType][device].name_long];
               camera.stream_code = camera.public_share_url.slice(camera.public_share_url.length - 6);
               formatCameraTime(camera);
+            } else if (deviceType === "thermostats") {
+              var thermostat = newData[devices[deviceType][device].name_long];
+              formatThermostatTime(thermostat);
+            } else if (deviceType === "smoke_co_alarms") {
+              var alarm = newData[devices[deviceType][device].name_long];
+              formatAlarmTime(alarm);
             }
           }
         });
       });
+    }
+
+    function formatAlarmTime (alarm) {
+      alarm.last_connection = new Date(alarm.last_connection).toLocaleString();
+      alarm.last_manual_test_time = new Date(alarm.last_manual_test_time).toLocaleString();
+    }
+
+    function formatThermostatTime (thermostat) {
+      thermostat.last_connection = new Date(thermostat.last_connection).toLocaleString();
+      thermostat.fan_timer_timeout = new Date(thermostat.fan_timer_timeout).toLocaleString();
     }
 
     function formatCameraTime (camera) {
@@ -108,10 +124,17 @@
       camera.last_event.urls_expire_time = new Date(camera.last_event.urls_expire_time).toLocaleString();
     }
 
+    function formatStructureTime (structure) {
+      structure.peak_period_start_time = new Date(structure.peak_period_start_time).toLocaleString();
+      structure.peak_period_end_time = new Date(structure.peak_period_end_time).toLocaleString();
+    }
+
     function unpackStructures (structures, newData) {
       Object.keys(structures).forEach(function (structure) {
         if (structures[structure].name) {
           newData[structures[structure].name] = structures[structure];
+          var structure = newData[structures[structure].name];
+          formatStructureTime(structure);
         }
       });
     }
@@ -171,7 +194,7 @@
       var newData = {
         live_stream_html: "<iframe src=\"https://video.nest.com/embedded/live/" + currentSettings.stream_code + "\" frameborder=\"0\" width=\"100%\" height=\"100%\"></iframe>"
       }
-      
+
       updateCallback(newData);
     }
 
