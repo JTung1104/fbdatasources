@@ -36,7 +36,7 @@
     function getAccessToken () {
       $.ajax({
         type: "POST",
-        url: "https://graph.api.smartthings.com/oauth/token",
+        url: "https://thingproxy.freeboard.io/fetch/https://graph.api.smartthings.com/oauth/token",
         data: {
           grant_type: "authorization_code",
           code: currentSettings.authorization_code,
