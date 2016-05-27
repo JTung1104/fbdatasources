@@ -56,12 +56,15 @@
     }
 
     function getData () {
+      if (typeof currentSettings.access_token === "undefined") {
+        getAccessToken();
+      }
     }
 
     function getEndpoints () {
 
     }
-    
+
     function createRefreshTimer (interval) {
       if (refreshTimer) {
         clearInterval(refreshTimer);
