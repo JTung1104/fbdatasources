@@ -34,6 +34,7 @@
         currentSettings = settings;
 
     function getAccessToken () {
+      debugger
       $.ajax({
         type: "POST",
         url: "https://thingproxy.freeboard.io/fetch/https://graph.api.smartthings.com/oauth/token/grant_type=authorization_code&code=YOUR_CODE&client_id=4400c472-33e3-42e0-9d92-2b9e60ebc52d&client_secret=3a5114d5-b567-48c0-a3d1-af4ae2856671&redirect_uri=www.freeboard.io",
