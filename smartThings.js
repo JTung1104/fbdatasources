@@ -46,13 +46,17 @@
           redirect_uri: "www.freeboard.io"
         },
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Host": "graph.api.smartthings.com"
         },
         success: function (payload) {
           console.log(payload);
           currentSettings.access_token = payload.access_token;
           getData();
-        }
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Basic " + btoa("4400c472-33e3-42e0-9d92-2b9e60ebc52d" + ": 3a5114d5-b567-48c0-a3d1-af4ae2856671"));
+        },
       });
     }
 
