@@ -33,10 +33,10 @@
         refreshTimer,
         currentSettings = settings;
 
-    function getAccessToken () { 
+    function getAccessToken () {
       $.ajax({
         type: "POST",
-        url: "https://thingproxy.freeboard.io/fetch/https://graph.api.smartthings.com/oauth/token/grant_type=authorization_code&code=" + currentSettings.authorization_code + "&client_id=4400c472-33e3-42e0-9d92-2b9e60ebc52d&client_secret=3a5114d5-b567-48c0-a3d1-af4ae2856671&redirect_uri=www.freeboard.io",
+        url: "https://graph.api.smartthings.com/oauth/token?grant_type=authorization_code&client_id=4400c472-33e3-42e0-9d92-2b9e60ebc52d&client_secret=3a5114d5-b567-48c0-a3d1-af4ae2856671&code=" + currentSettings.authorization_code + "&scope=app&redirect_uri=https%3A%2F%2Fgraph.api.smartthings.com%2Foauth%2Fcallback",
         data: {
           grant_type: "authorization_code",
           code: currentSettings.authorization_code,
@@ -62,6 +62,7 @@
       if (typeof currentSettings.access_token === "undefined") {
         getAccessToken();
       }
+      debugger
     }
 
     function getEndpoints () {
