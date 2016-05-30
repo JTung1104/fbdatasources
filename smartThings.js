@@ -55,7 +55,7 @@
           getData();
         },
         beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Basic " + btoa("4400c472-33e3-42e0-9d92-2b9e60ebc52d" + ": 3a5114d5-b567-48c0-a3d1-af4ae2856671"));
+          xhr.setRequestHeader ("Authorization", "Basic " + btoa("4400c472-33e3-42e0-9d92-2b9e60ebc52d:3a5114d5-b567-48c0-a3d1-af4ae2856671"));
         },
       });
     }
