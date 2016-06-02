@@ -13,14 +13,14 @@
         name: "refresh_time",
         display_name: "Refresh Every",
         type: "number",
-        suffix: "seconds",
-        default_value: 60
+        suffix: "minutes",
+        default_value: 10
       },
       {
         name: "daily_activity_date",
         display_name: "Daily Activity Date",
         type: "text",
-        description: "The date you want to see your daily activity in the format yyyy-MM-dd.",
+        description: "The date you wish to see your daily activity in the format yyyy-MM-dd.",
         default_value: formatDate(new Date().toLocaleDateString())
       }
     ],
@@ -217,6 +217,22 @@
       });
     }
 
+    function getFoodLogs () {
+
+    }
+
+    function getFoodGoal () {
+
+    }
+
+    function getWaterLog () {
+
+    }
+
+    function getWaterGoal () {
+
+    }
+
     function createRefreshTimer (interval) {
       if (refreshTimer) {
         clearInterval(refreshTimer);
@@ -227,7 +243,7 @@
       }, interval);
     }
 
-    createRefreshTimer(currentSettings.refresh_time * 1000);
+    createRefreshTimer(currentSettings.refresh_time * 1000 * 60);
 
     self.onSettingsChanged = function (newSettings) {
       currentSettings = newSettings;
