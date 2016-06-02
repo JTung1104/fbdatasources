@@ -55,7 +55,17 @@
         getDevices(),
         getBadges(),
         getSleepLogs(),
-        getSleepGoal()
+        getSleepGoal(),
+        getFoodLogs(),
+        getFoodGoals(),
+        getFavoriteFoods(),
+        getFrequentFoods(),
+        getFriends(),
+        getFriendsLeaderboard(),
+        getWaterLogs(),
+        getWaterGoal(),
+        getRecentFoods(),
+        getMeals()
       ).then(function () {
         updateCallback(newData);
       });
