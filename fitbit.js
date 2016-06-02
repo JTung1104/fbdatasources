@@ -233,6 +233,36 @@
 
     }
 
+    function getFriends () {
+      $.ajax({
+        method: "GET",
+        url: "https://api.fitbit.com/1/user/-/friends.json",
+        success: function (payload) {
+          newData["Friends"] = payload;
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        }
+      });
+    }
+
+    function getFriendsLeaderboard () {
+
+    }
+
+    function getHeartRateTimeSeries () {
+      $.ajax({
+        method: "GET",
+        url: "https://api.fitbit.com/1/user/-/activities/heart/date/" + currentSettings.daily_activity_date + "/1m.json",
+        success: function (payload) {
+          newData["Heart Rate Time Series"] = payload;
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        }
+      });
+    }
+
     function createRefreshTimer (interval) {
       if (refreshTimer) {
         clearInterval(refreshTimer);
