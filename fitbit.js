@@ -218,19 +218,55 @@
     }
 
     function getFoodLogs () {
-
+      $.ajax({
+        method: "GET",
+        url: "https://api.fitbit.com/1/user/-/foods/log/date/" + currentSettings.daily_activity_date + ".json",
+        success: function (payload) {
+          newData["Food Logs"] = payload;
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        }
+      });
     }
 
-    function getFoodGoal () {
-
+    function getFoodGoals () {
+      $.ajax({
+        method: "GET",
+        url: "https://api.fitbit.com/1/user/-/foods/log/goal.json",
+        success: function (payload) {
+          newData["Food Goals"] = payload;
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        }
+      });
     }
 
-    function getWaterLog () {
-
+    function getWaterLogs () {
+      $.ajax({
+        method: "GET",
+        url: "https://api.fitbit.com/1/user/-/foods/log/water/date/" + currentSettings.daily_activity_date + ".json",
+        success: function (payload) {
+          newData["Water Logs"] = payload;
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        }
+      });
     }
 
     function getWaterGoal () {
-
+      $.ajax({
+        method: "GET",
+        url: "https://api.fitbit.com/1/user/-/foods/log/water/goal.json",
+        success: function (payload) {
+          newData["Water Goal"] = payload;
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        }
+      });
     }
 
     function getFriends () {
@@ -247,7 +283,16 @@
     }
 
     function getFriendsLeaderboard () {
-
+      $.ajax({
+        method: "GET",
+        url: "https://api.fitbit.com/1/user/-/friends/leaderboard.json",
+        success: function (payload) {
+          newData["Friends Leaderboard"] = payload;
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        }
+      });
     }
 
     function getHeartRateTimeSeries () {
@@ -256,6 +301,58 @@
         url: "https://api.fitbit.com/1/user/-/activities/heart/date/" + currentSettings.daily_activity_date + "/1m.json",
         success: function (payload) {
           newData["Heart Rate Time Series"] = payload;
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        }
+      });
+    }
+
+    function getFavoriteFoods () {
+      $.ajax({
+        method: "GET",
+        url: "https://api.fitbit.com/1/user/-/foods/log/favorite.json",
+        success: function (payload) {
+          newData["Favorite Foods"] = payload;
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        }
+      });
+    }
+
+    function getFrequentFoods () {
+      $.ajax({
+        method: "GET",
+        url: "https://api.fitbit.com/1/user/-/foods/log/frequent.json",
+        success: function (payload) {
+          newData["Frequent Foods"] = payload;
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        }
+      });
+    }
+
+    function getRecentFoods () {
+      $.ajax({
+        method: "GET",
+        url: "https://api.fitbit.com/1/user/-/foods/recent.json",
+        success: function (payload) {
+          newData["Recent Foods"] = payload;
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        }
+      });
+    }
+
+    function getMeals () {
+      $.ajax({
+        method: "GET",
+        url: "https://api.fitbit.com/1/user/-/meals.json",
+        success: function (payload) {
+          newData["Meals"] = payload;
         },
         beforeSend: function (xhr) {
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
