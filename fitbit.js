@@ -43,6 +43,10 @@
         currentSettings = settings;
 
     function getData () {
+      if (typeof currentSettings.daily_activity_date === "undefined") {
+        currentSettings.daily_activity_date = formatDate(new Date().toLocaleDateString());
+      }
+
       $.when(
         getProfile(),
         getActivity(),
@@ -226,7 +230,7 @@
           payload.badges.forEach(function (badge) {
             newBadges[badge.description] = badge;
           });
-          
+
           newData["Badges"] = newBadges;
         },
         beforeSend: function (xhr) {
