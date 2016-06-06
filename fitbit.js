@@ -230,7 +230,7 @@
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/activities.json",
         success: function (payload) {
-          console.log(payload);
+          console.log("Lifetime Stats", payload);
           newData["Lifetime Stats"] = payload;
         },
         beforeSend: function (xhr) {
@@ -244,7 +244,7 @@
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/foods/log/date/" + currentSettings.daily_activity_date + ".json",
         success: function (payload) {
-          console.log(payload);
+          console.log("Food Logs", payload);
           newData["Food Logs"] = payload;
         },
         beforeSend: function (xhr) {
@@ -258,7 +258,7 @@
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/foods/log/goal.json",
         success: function (payload) {
-          console.log(payload);
+          console.log("Food Goals", payload);
           newData["Food Goals"] = payload;
         },
         beforeSend: function (xhr) {
