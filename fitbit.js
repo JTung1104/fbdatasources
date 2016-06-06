@@ -245,6 +245,14 @@
         url: "https://api.fitbit.com/1/user/-/sleep/date/" + currentSettings.daily_activity_date + ".json",
         success: function (payload) {
           console.log("Sleep Logs", payload);
+
+          var newSleepLogs = {};
+          payload.sleep.forEach(function (entry) {
+            entry.startTime = new Date(entry.startTime).toLocaleString();
+            newSleepLogs[entry.dateOfSleep] = entry;
+          });
+
+          payload.sleep = newSleepLogs;
           newData["Sleep Logs"] = payload;
         },
         beforeSend: function (xhr) {
