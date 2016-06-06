@@ -112,7 +112,13 @@
         url: "https://api.fitbit.com/1/user/-/body/bmi/date/today/max.json",
         success: function (payload) {
           console.log("Body Time Series BMI", payload);
-          newData["Body Time Series BMI"] = payload;
+
+          var newTimeSeries = {};
+          payload["body-bmi"].forEach(function(entry) {
+            newTimeSeries[entry.dateTime] = entry.value;
+          });
+
+          newData["Body Time Series BMI"] = newTimeSeries;
         },
         beforeSend: function (xhr) {
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
@@ -126,7 +132,13 @@
         url: "https://api.fitbit.com/1/user/-/body/fat/date/today/max.json",
         success: function (payload) {
           console.log("Body Time Series Fat", payload);
-          newData["Body Time Series Fat"] = payload;
+
+          var newTimeSeries = {};
+          payload["body-fat"].forEach(function(entry) {
+            newTimeSeries[entry.dateTime] = entry.value;
+          });
+
+          newData["Body Time Series Fat"] = newTimeSeries;
         },
         beforeSend: function (xhr) {
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
@@ -140,7 +152,13 @@
         url: "https://api.fitbit.com/1/user/-/body/weight/date/today/max.json",
         success: function (payload) {
           console.log("Body Time Series Weight", payload);
-          newData["Body Time Series Weight"] = payload;
+
+          var newTimeSeries = {};
+          payload["body-weight"].forEach(function(entry) {
+            newTimeSeries[entry.dateTime] = entry.value;
+          });
+
+          newData["Body Time Series Weight"] = newTimeSeries;
         },
         beforeSend: function (xhr) {
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
@@ -182,7 +200,14 @@
         url: "https://api.fitbit.com/1/user/-/devices.json",
         success: function (payload) {
           console.log("Devices", payload);
-          newData["Devices"] = payload;
+
+          var newDevices = {};
+          Object.keys(payload).forEach(function (key) {
+            payload[key].lastSyncTime = new Date(payload[key].lastSyncTime).toLocaleString();
+            newDevices[payload[key].deviceVersion] = payload[key];
+          });
+
+          newData["Devices"] = newDevices;
         },
         beforeSend: function (xhr) {
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
