@@ -78,7 +78,7 @@
     }
 
     function getProfile () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/profile.json",
         success: function (payload) {
@@ -92,7 +92,7 @@
     }
 
     function getActivity () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/activities/date/" + currentSettings.daily_activity_date + ".json",
         success: function (payload) {
@@ -113,7 +113,7 @@
     }
 
     function getBodyTimeSeriesBMI () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/body/bmi/date/today/max.json",
         success: function (payload) {
@@ -133,7 +133,7 @@
     }
 
     function getBodyTimeSeriesFat () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/body/fat/date/today/max.json",
         success: function (payload) {
@@ -153,7 +153,7 @@
     }
 
     function getBodyTimeSeriesWeight () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/body/weight/date/today/max.json",
         success: function (payload) {
@@ -173,7 +173,7 @@
     }
 
     function getBodyFatLogs () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/body/log/fat/date/" + currentSettings.daily_activity_date + ".json",
         success: function (payload) {
@@ -187,7 +187,7 @@
     }
 
     function getBodyGoals () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/body/log/weight/date/" + currentSettings.daily_activity_date + ".json",
         success: function (payload) {
@@ -201,7 +201,7 @@
     }
 
     function getDevices () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/devices.json",
         success: function (payload) {
@@ -226,7 +226,7 @@
     }
 
     function getBadges () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/badges.json",
         success: function (payload) {
@@ -246,7 +246,7 @@
     }
 
     function getSleepLogs () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/sleep/date/" + currentSettings.daily_activity_date + ".json",
         success: function (payload) {
@@ -268,7 +268,7 @@
     }
 
     function getSleepGoal () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/sleep/goal.json",
         success: function (payload) {
@@ -282,7 +282,7 @@
     }
 
     function getLifetimeStats () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/activities.json",
         success: function (payload) {
@@ -296,7 +296,7 @@
     }
 
     function getFoodLogs () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/foods/log/date/" + currentSettings.daily_activity_date + ".json",
         success: function (payload) {
@@ -307,7 +307,7 @@
             newFoods[food.loggedFood.name] = food;
           });
           payload.foods = newFoods;
-          
+
           newData["Food Logs"] = payload;
         },
         beforeSend: function (xhr) {
@@ -317,7 +317,7 @@
     }
 
     function getFoodGoals () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/foods/log/goal.json",
         success: function (payload) {
@@ -331,7 +331,7 @@
     }
 
     function getWaterLogs () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/foods/log/water/date/" + currentSettings.daily_activity_date + ".json",
         success: function (payload) {
@@ -345,7 +345,7 @@
     }
 
     function getWaterGoal () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/foods/log/water/goal.json",
         success: function (payload) {
@@ -359,7 +359,7 @@
     }
 
     function getFriends () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/friends.json",
         success: function (payload) {
@@ -373,7 +373,7 @@
     }
 
     function getFriendsLeaderboard () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/friends/leaderboard.json",
         success: function (payload) {
@@ -387,7 +387,7 @@
     }
 
     function getHeartRateTimeSeries () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/activities/heart/date/" + currentSettings.daily_activity_date + "/1m.json",
         success: function (payload) {
@@ -401,7 +401,7 @@
     }
 
     function getFavoriteFoods () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/foods/log/favorite.json",
         success: function (payload) {
@@ -415,7 +415,7 @@
     }
 
     function getFrequentFoods () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/foods/log/frequent.json",
         success: function (payload) {
@@ -435,7 +435,7 @@
     }
 
     function getRecentFoods () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/foods/recent.json",
         success: function (payload) {
@@ -449,7 +449,7 @@
     }
 
     function getMeals () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/meals.json",
         success: function (payload) {
@@ -463,7 +463,7 @@
     }
 
     function getAlarms () {
-      $.ajax({
+      return $.ajax({
         method: "GET",
         url: "https://api.fitbit.com/1/user/-/devices/tracker/" + currentSettings.tracker_id + "/alarms.json",
         success: function (payload) {
