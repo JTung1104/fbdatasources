@@ -91,6 +91,13 @@
         url: "https://api.fitbit.com/1/user/-/activities/date/" + currentSettings.daily_activity_date + ".json",
         success: function (payload) {
           console.log("Daily Activity", payload);
+          var newDistances = {};
+
+          payload.summary.distances.forEach(function (distance) {
+            newDistances[distance.activity] = distance.distance;
+          });
+
+          payload.summary.distances = newDistances;
           newData["Daily Activity"] = payload;
         },
         beforeSend: function (xhr) {
