@@ -43,7 +43,7 @@
         currentSettings = settings;
 
     function getData () {
-      if (typeof currentSettings.daily_activity_date === "undefined") {
+      if (currentSettings.daily_activity_date.length == 0) {
         currentSettings.daily_activity_date = formatDate(new Date().toLocaleDateString());
       }
 
