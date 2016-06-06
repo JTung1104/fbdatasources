@@ -69,7 +69,8 @@
         getWaterLogs(),
         getWaterGoal(),
         getRecentFoods(),
-        getMeals()
+        getMeals(),
+        getAlarms()
       ).then(function () {
         updateCallback(newData);
       });
@@ -209,6 +210,10 @@
           Object.keys(payload).forEach(function (key) {
             payload[key].lastSyncTime = new Date(payload[key].lastSyncTime).toLocaleString();
             newDevices[payload[key].deviceVersion] = payload[key];
+
+            if (payload[key].type === "TRACKER") {
+              currentSettings.tracker_id = payload[key].id;
+            }
           });
 
           newData["Devices"] = newDevices;
@@ -436,6 +441,20 @@
         success: function (payload) {
           console.log("Meals", payload);
           newData["Meals"] = payload;
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        }
+      });
+    }
+
+    function getAlarms () {
+      $.ajax({
+        method: "GET",
+        url: "https://api.fitbit.com/1/user/-/devices/tracker/" + currentSettings.tracker_id + "/alarms.json",
+        success: function (payload) {
+          console.log("Alarms", payload);
+          newData["Alarms"] = payload;
         },
         beforeSend: function (xhr) {
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
