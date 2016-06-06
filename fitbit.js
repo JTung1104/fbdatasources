@@ -72,6 +72,7 @@
         getMeals(),
         getAlarms()
       ).then(function () {
+        console.log("newData", newData);
         updateCallback(newData);
       });
     }
@@ -300,6 +301,13 @@
         url: "https://api.fitbit.com/1/user/-/foods/log/date/" + currentSettings.daily_activity_date + ".json",
         success: function (payload) {
           console.log("Food Logs", payload);
+
+          var newFoods = {};
+          payload.foods.forEach(function (food) {
+            newFoods[food.loggedFood.name] = food;
+          });
+          payload.foods = newFoods;
+          
           newData["Food Logs"] = payload;
         },
         beforeSend: function (xhr) {
@@ -417,7 +425,7 @@
           payload.forEach(function (food) {
             newFrequentFoods[food.name] = food;
           });
-          
+
           newData["Frequent Foods"] = newFrequentFoods;
         },
         beforeSend: function (xhr) {
