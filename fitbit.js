@@ -412,7 +412,13 @@
         url: "https://api.fitbit.com/1/user/-/foods/log/frequent.json",
         success: function (payload) {
           console.log("Frequent Foods", payload);
-          newData["Frequent Foods"] = payload;
+
+          var newFrequentFoods = {};
+          payload.forEach(function (food) {
+            newFrequentFoods[food.name] = food;
+          });
+          
+          newData["Frequent Foods"] = newFrequentFoods;
         },
         beforeSend: function (xhr) {
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
@@ -459,7 +465,7 @@
           payload.trackerAlarms.forEach(function (alarm) {
             newAlarms[alarm.time] = alarm;
           });
-          
+
           newData["Alarms"] = newAlarms;
         },
         beforeSend: function (xhr) {
