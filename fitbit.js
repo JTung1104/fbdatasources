@@ -48,439 +48,379 @@
       }
 
       $.when(
-        getProfile(),
-        getActivity(),
-        getBodyFatLogs(),
-        getBodyGoals(),
-        getBodyTimeSeriesBMI(),
-        getBodyTimeSeriesFat(),
-        getBodyTimeSeriesWeight(),
-        getLifetimeStats(),
-        getDevices(),
-        getBadges(),
-        getSleepLogs(),
-        getSleepGoal(),
-        getFoodLogs(),
-        getFoodGoals(),
-        getFavoriteFoods(),
-        getFrequentFoods(),
-        getFriends(),
-        getFriendsLeaderboard(),
-        getWaterLogs(),
-        getWaterGoal(),
-        getRecentFoods(),
-        getMeals(),
-        getAlarms()
+        getProfile,
+        getActivity,
+        getBodyFatLogs,
+        getBodyGoals,
+        getBodyTimeSeriesBMI,
+        getBodyTimeSeriesFat,
+        getBodyTimeSeriesWeight,
+        getLifetimeStats,
+        getDevices,
+        getBadges,
+        getSleepLogs,
+        getSleepGoal,
+        getFoodLogs,
+        getFoodGoals,
+        getFavoriteFoods,
+        getFrequentFoods,
+        getFriends,
+        getFriendsLeaderboard,
+        getWaterLogs,
+        getWaterGoal,
+        getMeals,
+        getAlarms
       ).then(function () {
         console.log("newData", newData);
         updateCallback(newData);
       });
     }
 
-    function getProfile () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/profile.json",
-        success: function (payload) {
-          console.log("Profile", payload);
-          newData["Profile"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+    var getProfile = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/profile.json",
+      success: function (payload) {
+        console.log("Profile", payload);
+        newData["Profile"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getActivity () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/activities/date/" + currentSettings.daily_activity_date + ".json",
-        success: function (payload) {
-          console.log("Daily Activity", payload);
-          var newDistances = {};
+    var getActivity = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/activities/date/" + currentSettings.daily_activity_date + ".json",
+      success: function (payload) {
+        console.log("Daily Activity", payload);
+        var newDistances = {};
 
-          payload.summary.distances.forEach(function (distance) {
-            newDistances[distance.activity] = distance.distance;
-          });
+        payload.summary.distances.forEach(function (distance) {
+          newDistances[distance.activity] = distance.distance;
+        });
 
-          payload.summary.distances = newDistances;
-          newData["Daily Activity"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+        payload.summary.distances = newDistances;
+        newData["Daily Activity"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getBodyTimeSeriesBMI () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/body/bmi/date/today/max.json",
-        success: function (payload) {
-          console.log("Body Time Series BMI", payload);
+    var getBodyTimeSeriesBMI = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/body/bmi/date/today/max.json",
+      success: function (payload) {
+        console.log("Body Time Series BMI", payload);
 
-          var newTimeSeries = {};
-          payload["body-bmi"].forEach(function(entry) {
-            newTimeSeries[entry.dateTime] = entry.value;
-          });
+        var newTimeSeries = {};
+        payload["body-bmi"].forEach(function(entry) {
+          newTimeSeries[entry.dateTime] = entry.value;
+        });
 
-          newData["Body Time Series BMI"] = newTimeSeries;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+        newData["Body Time Series BMI"] = newTimeSeries;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getBodyTimeSeriesFat () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/body/fat/date/today/max.json",
-        success: function (payload) {
-          console.log("Body Time Series Fat", payload);
+    var getBodyTimeSeriesFat = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/body/fat/date/today/max.json",
+      success: function (payload) {
+        console.log("Body Time Series Fat", payload);
 
-          var newTimeSeries = {};
-          payload["body-fat"].forEach(function(entry) {
-            newTimeSeries[entry.dateTime] = entry.value;
-          });
+        var newTimeSeries = {};
+        payload["body-fat"].forEach(function(entry) {
+          newTimeSeries[entry.dateTime] = entry.value;
+        });
 
-          newData["Body Time Series Fat"] = newTimeSeries;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+        newData["Body Time Series Fat"] = newTimeSeries;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getBodyTimeSeriesWeight () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/body/weight/date/today/max.json",
-        success: function (payload) {
-          console.log("Body Time Series Weight", payload);
+    var getBodyTimeSeriesWeight = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/body/weight/date/today/max.json",
+      success: function (payload) {
+        console.log("Body Time Series Weight", payload);
 
-          var newTimeSeries = {};
-          payload["body-weight"].forEach(function(entry) {
-            newTimeSeries[entry.dateTime] = entry.value;
-          });
+        var newTimeSeries = {};
+        payload["body-weight"].forEach(function(entry) {
+          newTimeSeries[entry.dateTime] = entry.value;
+        });
 
-          newData["Body Time Series Weight"] = newTimeSeries;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+        newData["Body Time Series Weight"] = newTimeSeries;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getBodyFatLogs () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/body/log/fat/date/" + currentSettings.daily_activity_date + ".json",
-        success: function (payload) {
-          console.log("Body Fat Logs", payload);
-          newData["Body Fat Logs"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+    var getBodyFatLogs = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/body/log/fat/date/" + currentSettings.daily_activity_date + ".json",
+      success: function (payload) {
+        console.log("Body Fat Logs", payload);
+        newData["Body Fat Logs"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getBodyGoals () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/body/log/weight/date/" + currentSettings.daily_activity_date + ".json",
-        success: function (payload) {
-          console.log("Body Goals", payload);
-          newData["Body Goals"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
 
-    function getDevices () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/devices.json",
-        success: function (payload) {
-          console.log("Devices", payload);
+    var getBodyGoals = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/body/log/weight/date/" + currentSettings.daily_activity_date + ".json",
+      success: function (payload) {
+        console.log("Body Goals", payload);
+        newData["Body Goals"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-          var newDevices = {};
-          Object.keys(payload).forEach(function (key) {
-            payload[key].lastSyncTime = new Date(payload[key].lastSyncTime).toLocaleString();
-            newDevices[payload[key].deviceVersion] = payload[key];
+    var getDevices = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/devices.json",
+      success: function (payload) {
+        console.log("Devices", payload);
 
-            if (payload[key].type === "TRACKER") {
-              currentSettings.tracker_id = payload[key].id;
-            }
-          });
+        var newDevices = {};
+        Object.keys(payload).forEach(function (key) {
+          payload[key].lastSyncTime = new Date(payload[key].lastSyncTime).toLocaleString();
+          newDevices[payload[key].deviceVersion] = payload[key];
 
-          newData["Devices"] = newDevices;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+          if (payload[key].type === "TRACKER") {
+            currentSettings.tracker_id = payload[key].id;
+          }
+        });
 
-    function getBadges () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/badges.json",
-        success: function (payload) {
-          console.log("Badges", payload);
+        newData["Devices"] = newDevices;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-          var newBadges = {};
-          payload.badges.forEach(function (badge) {
-            newBadges[badge.description] = badge;
-          });
+    var getBadges = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/badges.json",
+      success: function (payload) {
+        console.log("Badges", payload);
 
-          newData["Badges"] = newBadges;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+        var newBadges = {};
+        payload.badges.forEach(function (badge) {
+          newBadges[badge.description] = badge;
+        });
 
-    function getSleepLogs () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/sleep/date/" + currentSettings.daily_activity_date + ".json",
-        success: function (payload) {
-          console.log("Sleep Logs", payload);
+        newData["Badges"] = newBadges;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-          var newSleepLogs = {};
-          payload.sleep.forEach(function (entry) {
-            entry.startTime = new Date(entry.startTime).toLocaleString();
-            newSleepLogs[entry.dateOfSleep] = entry;
-          });
+    var getSleepLogs = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/sleep/date/" + currentSettings.daily_activity_date + ".json",
+      success: function (payload) {
+        console.log("Sleep Logs", payload);
 
-          payload.sleep = newSleepLogs;
-          newData["Sleep Logs"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+        var newSleepLogs = {};
+        payload.sleep.forEach(function (entry) {
+          entry.startTime = new Date(entry.startTime).toLocaleString();
+          newSleepLogs[entry.dateOfSleep] = entry;
+        });
 
-    function getSleepGoal () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/sleep/goal.json",
-        success: function (payload) {
-          console.log("Sleep Goal", payload);
-          newData["Sleep Goal"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+        payload.sleep = newSleepLogs;
+        newData["Sleep Logs"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getLifetimeStats () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/activities.json",
-        success: function (payload) {
-          console.log("Lifetime Stats", payload);
-          newData["Lifetime Stats"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+    var getSleepGoal = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/sleep/goal.json",
+      success: function (payload) {
+        console.log("Sleep Goal", payload);
+        newData["Sleep Goal"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getFoodLogs () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/foods/log/date/" + currentSettings.daily_activity_date + ".json",
-        success: function (payload) {
-          console.log("Food Logs", payload);
+    var getLifetimeStats = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/activities.json",
+      success: function (payload) {
+        console.log("Lifetime Stats", payload);
+        newData["Lifetime Stats"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-          var newFoods = {};
-          payload.foods.forEach(function (food) {
-            newFoods[food.loggedFood.name] = food;
-          });
-          payload.foods = newFoods;
+    var getFoodLogs = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/foods/log/date/" + currentSettings.daily_activity_date + ".json",
+      success: function (payload) {
+        console.log("Food Logs", payload);
 
-          newData["Food Logs"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+        var newFoods = {};
+        payload.foods.forEach(function (food) {
+          newFoods[food.loggedFood.name] = food;
+        });
+        payload.foods = newFoods;
 
-    function getFoodGoals () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/foods/log/goal.json",
-        success: function (payload) {
-          console.log("Food Goals", payload);
-          newData["Food Goals"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+        newData["Food Logs"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getWaterLogs () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/foods/log/water/date/" + currentSettings.daily_activity_date + ".json",
-        success: function (payload) {
-          console.log("Water Logs", payload);
-          newData["Water Logs"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+    var getFoodGoals = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/foods/log/goal.json",
+      success: function (payload) {
+        console.log("Food Goals", payload);
+        newData["Food Goals"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getWaterGoal () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/foods/log/water/goal.json",
-        success: function (payload) {
-          console.log("Water Goal", payload);
-          newData["Water Goal"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+    var getWaterLogs = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/foods/log/water/date/" + currentSettings.daily_activity_date + ".json",
+      success: function (payload) {
+        console.log("Water Logs", payload);
+        newData["Water Logs"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getFriends () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/friends.json",
-        success: function (payload) {
-          console.log("Friends", payload);
-          newData["Friends"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+    var getWaterGoal = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/foods/log/water/goal.json",
+      success: function (payload) {
+        console.log("Water Goal", payload);
+        newData["Water Goal"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getFriendsLeaderboard () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/friends/leaderboard.json",
-        success: function (payload) {
-          console.log("Friends Leaderboard", payload);
-          newData["Friends Leaderboard"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+    var getFriends = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/friends.json",
+      success: function (payload) {
+        console.log("Friends", payload);
+        newData["Friends"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getHeartRateTimeSeries () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/activities/heart/date/" + currentSettings.daily_activity_date + "/1m.json",
-        success: function (payload) {
-          console.log("Heart Rate Time Series", payload);
-          newData["Heart Rate Time Series"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+    var getFriendsLeaderboard = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/friends/leaderboard.json",
+      success: function (payload) {
+        console.log("Friends Leaderboard", payload);
+        newData["Friends Leaderboard"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getFavoriteFoods () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/foods/log/favorite.json",
-        success: function (payload) {
-          console.log("Favorite Foods", payload);
-          newData["Favorite Foods"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+    var getHeartRateTimeSeries = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/activities/heart/date/" + currentSettings.daily_activity_date + "/1m.json",
+      success: function (payload) {
+        console.log("Heart Rate Time Series", payload);
+        newData["Heart Rate Time Series"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getFrequentFoods () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/foods/log/frequent.json",
-        success: function (payload) {
-          console.log("Frequent Foods", payload);
+    var getFavoriteFoods = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/foods/log/favorite.json",
+      success: function (payload) {
+        console.log("Favorite Foods", payload);
+        newData["Favorite Foods"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-          var newFrequentFoods = {};
-          payload.forEach(function (food) {
-            newFrequentFoods[food.name] = food;
-          });
+    var getFrequentFoods = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/foods/log/frequent.json",
+      success: function (payload) {
+        console.log("Frequent Foods", payload);
 
-          newData["Frequent Foods"] = newFrequentFoods;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+        var newFrequentFoods = {};
+        payload.forEach(function (food) {
+          newFrequentFoods[food.name] = food;
+        });
 
-    function getRecentFoods () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/foods/recent.json",
-        success: function (payload) {
-          console.log("Recent Foods", payload);
-          newData["Recent Foods"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+        newData["Frequent Foods"] = newFrequentFoods;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getMeals () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/meals.json",
-        success: function (payload) {
-          console.log("Meals", payload);
-          newData["Meals"] = payload;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+    var getMeals = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/meals.json",
+      success: function (payload) {
+        console.log("Meals", payload);
+        newData["Meals"] = payload;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
-    function getAlarms () {
-      return $.ajax({
-        method: "GET",
-        url: "https://api.fitbit.com/1/user/-/devices/tracker/" + currentSettings.tracker_id + "/alarms.json",
-        success: function (payload) {
-          console.log("Alarms", payload);
+    var getAlarms = $.ajax({
+      method: "GET",
+      url: "https://api.fitbit.com/1/user/-/devices/tracker/" + currentSettings.tracker_id + "/alarms.json",
+      success: function (payload) {
+        console.log("Alarms", payload);
 
-          var newAlarms = {};
-          payload.trackerAlarms.forEach(function (alarm) {
-            newAlarms[alarm.time] = alarm;
-          });
+        var newAlarms = {};
+        payload.trackerAlarms.forEach(function (alarm) {
+          newAlarms[alarm.time] = alarm;
+        });
 
-          newData["Alarms"] = newAlarms;
-        },
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-        }
-      });
-    }
+        newData["Alarms"] = newAlarms;
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+      }
+    });
 
     function createRefreshTimer (interval) {
       if (refreshTimer) {
