@@ -221,7 +221,13 @@
         url: "https://api.fitbit.com/1/user/-/badges.json",
         success: function (payload) {
           console.log("Badges", payload);
-          newData["Badges"] = payload;
+
+          var newBadges = {};
+          payload.badges.forEach(function (badge) {
+            newBadges[badge.description] = badge;
+          });
+          
+          newData["Badges"] = newBadges;
         },
         beforeSend: function (xhr) {
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
