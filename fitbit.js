@@ -454,7 +454,13 @@
         url: "https://api.fitbit.com/1/user/-/devices/tracker/" + currentSettings.tracker_id + "/alarms.json",
         success: function (payload) {
           console.log("Alarms", payload);
-          newData["Alarms"] = payload;
+
+          var newAlarms = {};
+          payload.trackerAlarms.forEach(function (alarm) {
+            newAlarms[alarm.time] = alarm;
+          });
+          
+          newData["Alarms"] = newAlarms;
         },
         beforeSend: function (xhr) {
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
