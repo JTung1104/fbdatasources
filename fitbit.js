@@ -71,7 +71,6 @@
         getMeals,
         getAlarms
       ).then(function () {
-        console.log("newData", newData);
         updateCallback(newData);
       });
     }
@@ -80,7 +79,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/profile.json",
       success: function (payload) {
-        console.log("Profile", payload);
         newData["Profile"] = payload;
       },
       beforeSend: function (xhr) {
@@ -92,7 +90,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/activities/date/" + currentSettings.daily_activity_date + ".json",
       success: function (payload) {
-        console.log("Daily Activity", payload);
         var newDistances = {};
 
         payload.summary.distances.forEach(function (distance) {
@@ -111,7 +108,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/body/bmi/date/today/max.json",
       success: function (payload) {
-        console.log("Body Time Series BMI", payload);
 
         var newTimeSeries = {};
         payload["body-bmi"].forEach(function(entry) {
@@ -129,7 +125,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/body/fat/date/today/max.json",
       success: function (payload) {
-        console.log("Body Time Series Fat", payload);
 
         var newTimeSeries = {};
         payload["body-fat"].forEach(function(entry) {
@@ -147,7 +142,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/body/weight/date/today/max.json",
       success: function (payload) {
-        console.log("Body Time Series Weight", payload);
 
         var newTimeSeries = {};
         payload["body-weight"].forEach(function(entry) {
@@ -165,7 +159,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/body/log/fat/date/" + currentSettings.daily_activity_date + ".json",
       success: function (payload) {
-        console.log("Body Fat Logs", payload);
         newData["Body Fat Logs"] = payload;
       },
       beforeSend: function (xhr) {
@@ -178,7 +171,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/body/log/weight/date/" + currentSettings.daily_activity_date + ".json",
       success: function (payload) {
-        console.log("Body Goals", payload);
         newData["Body Goals"] = payload;
       },
       beforeSend: function (xhr) {
@@ -190,7 +182,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/devices.json",
       success: function (payload) {
-        console.log("Devices", payload);
 
         var newDevices = {};
         Object.keys(payload).forEach(function (key) {
@@ -213,7 +204,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/badges.json",
       success: function (payload) {
-        console.log("Badges", payload);
 
         var newBadges = {};
         payload.badges.forEach(function (badge) {
@@ -231,7 +221,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/sleep/date/" + currentSettings.daily_activity_date + ".json",
       success: function (payload) {
-        console.log("Sleep Logs", payload);
 
         var newSleepLogs = {};
         payload.sleep.forEach(function (entry) {
@@ -251,7 +240,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/sleep/goal.json",
       success: function (payload) {
-        console.log("Sleep Goal", payload);
         newData["Sleep Goal"] = payload;
       },
       beforeSend: function (xhr) {
@@ -263,7 +251,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/activities.json",
       success: function (payload) {
-        console.log("Lifetime Stats", payload);
         newData["Lifetime Stats"] = payload;
       },
       beforeSend: function (xhr) {
@@ -275,7 +262,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/foods/log/date/" + currentSettings.daily_activity_date + ".json",
       success: function (payload) {
-        console.log("Food Logs", payload);
 
         var newFoods = {};
         payload.foods.forEach(function (food) {
@@ -294,7 +280,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/foods/log/goal.json",
       success: function (payload) {
-        console.log("Food Goals", payload);
         newData["Food Goals"] = payload;
       },
       beforeSend: function (xhr) {
@@ -306,7 +291,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/foods/log/water/date/" + currentSettings.daily_activity_date + ".json",
       success: function (payload) {
-        console.log("Water Logs", payload);
         newData["Water Logs"] = payload;
       },
       beforeSend: function (xhr) {
@@ -318,7 +302,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/foods/log/water/goal.json",
       success: function (payload) {
-        console.log("Water Goal", payload);
         newData["Water Goal"] = payload;
       },
       beforeSend: function (xhr) {
@@ -330,7 +313,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/friends.json",
       success: function (payload) {
-        console.log("Friends", payload);
         newData["Friends"] = payload;
       },
       beforeSend: function (xhr) {
@@ -342,7 +324,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/friends/leaderboard.json",
       success: function (payload) {
-        console.log("Friends Leaderboard", payload);
         newData["Friends Leaderboard"] = payload;
       },
       beforeSend: function (xhr) {
@@ -354,7 +335,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/activities/heart/date/" + currentSettings.daily_activity_date + "/1m.json",
       success: function (payload) {
-        console.log("Heart Rate Time Series", payload);
         newData["Heart Rate Time Series"] = payload;
       },
       beforeSend: function (xhr) {
@@ -366,7 +346,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/foods/log/favorite.json",
       success: function (payload) {
-        console.log("Favorite Foods", payload);
         newData["Favorite Foods"] = payload;
       },
       beforeSend: function (xhr) {
@@ -378,7 +357,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/foods/log/frequent.json",
       success: function (payload) {
-        console.log("Frequent Foods", payload);
 
         var newFrequentFoods = {};
         payload.forEach(function (food) {
@@ -396,7 +374,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/meals.json",
       success: function (payload) {
-        console.log("Meals", payload);
         newData["Meals"] = payload;
       },
       beforeSend: function (xhr) {
@@ -408,7 +385,6 @@
       method: "GET",
       url: "https://api.fitbit.com/1/user/-/devices/tracker/" + currentSettings.tracker_id + "/alarms.json",
       success: function (payload) {
-        console.log("Alarms", payload);
 
         var newAlarms = {};
         payload.trackerAlarms.forEach(function (alarm) {
