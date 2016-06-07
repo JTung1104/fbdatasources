@@ -68,8 +68,7 @@
         getFriendsLeaderboard,
         getWaterLogs,
         getWaterGoal,
-        getMeals,
-        getAlarms
+        getMeals
       ).then(function () {
         updateCallback(newData);
       });
@@ -194,6 +193,7 @@
         });
 
         newData["Devices"] = newDevices;
+        getAlarms();
       },
       beforeSend: function (xhr) {
         xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
