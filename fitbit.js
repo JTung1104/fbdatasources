@@ -70,7 +70,7 @@
         getWaterGoal,
         getMeals
       ).then(function () {
-        updateCallback(newData);
+        getAlarms;
       });
     }
 
@@ -193,7 +193,6 @@
         });
 
         newData["Devices"] = newDevices;
-        getAlarms();
       },
       beforeSend: function (xhr) {
         xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
@@ -392,6 +391,7 @@
         });
 
         newData["Alarms"] = newAlarms;
+        updateCallback(newData);
       },
       beforeSend: function (xhr) {
         xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
