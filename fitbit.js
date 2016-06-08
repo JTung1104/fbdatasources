@@ -192,7 +192,10 @@
 
           if (payload[key].type === "TRACKER") {
             currentSettings.tracker_id = payload[key].id;
-            getAlarms;
+
+            setTimeout(function () {
+              getAlarms;
+            }, 500);
           }
         });
 
