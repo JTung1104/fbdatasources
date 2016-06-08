@@ -14,7 +14,7 @@
         display_name: "Refresh Every",
         type: "number",
         suffix: "minutes",
-        default_value: 10
+        default_value: 60
       },
       {
         name: "daily_activity_date",
@@ -69,8 +69,11 @@
         getWaterGoal,
         getMeals
       ).then(function () {
-        getDevices;
-        updateCallback(newData);
+        getDevices; // getDevices will call getAlarms in success callback which will call updateCallback
+
+        if (typeof currentSettings.tracker_id === "undefined") {
+          updateCallback(newData);
+        }
       });
     }
 
