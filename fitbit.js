@@ -69,7 +69,7 @@
         getWaterGoal,
         getMeals
       ).then(function () {
-        getDevices; // getDevices will call getAlarms in success callback which will call updateCallback
+        getDevices;
         updateCallback(newData);
       });
     }
