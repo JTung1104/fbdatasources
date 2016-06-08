@@ -70,10 +70,7 @@
         getMeals
       ).then(function () {
         getDevices; // getDevices will call getAlarms in success callback which will call updateCallback
-
-        if (typeof currentSettings.tracker_id === "undefined") {
-          updateCallback(newData);
-        }
+        updateCallback(newData);
       });
     }
 
@@ -192,10 +189,7 @@
 
           if (payload[key].type === "TRACKER") {
             currentSettings.tracker_id = payload[key].id;
-
-            setTimeout(function () {
-              getAlarms;
-            }, 500);
+            getAlarms;
           }
         });
 
