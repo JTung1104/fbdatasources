@@ -56,7 +56,6 @@
         getBodyTimeSeriesFat,
         getBodyTimeSeriesWeight,
         getLifetimeStats,
-        getDevices,
         getBadges,
         getSleepLogs,
         getSleepGoal,
@@ -70,7 +69,8 @@
         getWaterGoal,
         getMeals
       ).then(function () {
-        getAlarms;
+        getDevices;
+        updateCallback(newData);
       });
     }
 
@@ -189,6 +189,7 @@
 
           if (payload[key].type === "TRACKER") {
             currentSettings.tracker_id = payload[key].id;
+            getAlarms;
           }
         });
 
