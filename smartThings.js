@@ -48,7 +48,6 @@
           "Content-Type": "application/x-www-form-urlencoded"
         },
         success: function (payload) {
-          console.log("Access Token:", payload);
           currentSettings.access_token = payload.access_token;
           getEndpoints();
         },
@@ -91,7 +90,6 @@
         success: function (payload) {
           var newData = {};
 
-          console.log("information: ", payload);
           payload.forEach(function (object) {
             var newStates = {};
 
@@ -104,7 +102,6 @@
             newData[object.name] = object;
           });
 
-          console.log("newData: ", newData);
           updateCallback(newData);
         },
         beforeSend: function (xhr) {
