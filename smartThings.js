@@ -20,7 +20,7 @@
         display_name: "Refresh Every",
         type: "number",
         suffix: "seconds",
-        default_value: 60
+        default_value: 10
       }
     ],
     newInstance: function (settings, newInstanceCallback, updateCallback) {
@@ -50,7 +50,7 @@
         success: function (payload) {
           console.log("Access Token:", payload);
           currentSettings.access_token = payload.access_token;
-          getData();
+          getEndpoints();
         },
         beforeSend: function (xhr) {
           xhr.setRequestHeader ("Authorization", "Basic " + btoa("4400c472-33e3-42e0-9d92-2b9e60ebc52d:3a5114d5-b567-48c0-a3d1-af4ae2856671"));
@@ -76,7 +76,7 @@
         url: "https://thingproxy.freeboard.io/fetch/https://graph.api.smartthings.com/api/smartapps/endpoints",
         success: function (payload) {
           currentSettings.endpoints = payload["0"];
-          getData();
+          getInfo();
         },
         beforeSend: function (xhr) {
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
