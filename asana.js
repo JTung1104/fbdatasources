@@ -78,11 +78,31 @@
         },
         success: function (payload) {
           console.log("workspaces", payload);
-          newData.Workspaces = payload;
+          payload.data.forEach(function (workspace) {
+            getSingleWorkspace(workspace.id);
+          });
         },
         dataType: "JSON"
       });
     }
+
+    var getSingleWorkspace = function (id) {
+      $.ajax({
+        type: "GET",
+        url: "https://app.asana.com/api/1.0/workspaces/" + id,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        },
+        success: function (payload) {
+          console.log("single workspace", payload);
+          newData.Workspaces[payload.name] = payload;
+        },
+        dataType: "JSON"
+      });
+    };
 
     var getProjects = function () {
       $.ajax({
