@@ -10,6 +10,24 @@
         description: "Your personal authorization code generated from <a href=\"https://app.asana.com/-/oauth_authorize?response_type=code&client_id=145167453298639&redirect_uri=https%3A%2F%2Fwww.freeboard.io&state=state\" target=\"_blank\">here</a>. Copy in the text in the address bar after access_token=."
       },
       {
+        name: "access_token",
+        display_name: "Access Token",
+        type: "text",
+        description: "Leave this field blank."
+      },
+      {
+        name: "refresh_token",
+        display_name: "Refresh Token",
+        type: "text",
+        description: "Leave this field blank."
+      },
+      {
+        name: "expiration_time",
+        display_name: "Token Expiration Time",
+        type: "number",
+        description: "Leave this field blank."
+      },
+      {
         name: "refresh_time",
         display_name: "Refresh Every",
         type: "number",
@@ -99,6 +117,7 @@
         success: function (payload) {
           console.log("single workspace", payload);
           newData.Workspaces[payload.name] = payload;
+          updateCallback(newData);
         },
         dataType: "JSON"
       });
