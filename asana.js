@@ -7,7 +7,7 @@
         name: "authorization_code",
         display_name: "Authorization Code",
         type: "text",
-        description: "Your personal authorization code generated from <a href=\"https://app.asana.com/-/oauth_authorize?response_type=code&client_id=145167453298639&redirect_uri=https%3A%2F%2Fwww.freeboard.io&state=state\" target=\"_blank\">here</a>. Copy in the text in the address bar after access_token=."
+        description: "Your personal authorization code generated from <a href=\"https://app.asana.com/-/oauth_authorize?response_type=code&client_id=145167453298639&redirect_uri=https%3A%2F%2Fwww.freeboard.io&state=state\" target=\"_blank\">here</a>. Copy in the text in the address bar after code= up until the '&'."
       },
       {
         name: "access_token",
@@ -25,14 +25,15 @@
         name: "expiration_time",
         display_name: "Token Expiration Time",
         type: "number",
-        description: "Leave this field blank."
+        description: "Leave this field blank.",
+        default_value: 0
       },
       {
         name: "refresh_time",
         display_name: "Refresh Every",
         type: "number",
         suffix: "seconds",
-        default_value: 60
+        default_value: 600
       }
     ],
     newInstance: function (settings, newInstanceCallback, updateCallback) {
@@ -43,7 +44,11 @@
   var asanaDatasource = function (settings, updateCallback) {
     var self = this,
         refreshTimer,
-        newData = {},
+        newData = {
+          Workspaces: {},
+          Projects: {},
+          Attachments: {}
+        },
         currentSettings = settings;
 
     function getData () {
@@ -51,7 +56,9 @@
         getAccessToken();
       } else if (Date.now() >= currentSettings.expiration_time) {
         refreshAccessToken();
-      } else {
+      }
+
+      if (currentSettings.access_token) {
         getProjects();
         getWorkspaces();
       }
@@ -62,10 +69,10 @@
         type: "POST",
         url: "https://thingproxy.freeboard.io/fetch/https://app.asana.com/-/oauth_token?grant_type=authorization_code&code=" + currentSettings.authorization_code + "&client_id=145167453298639&client_secret=3bdb7d70e3e553d2233f61feebd0cf88&redirect_uri=https://www.freeboard.io",
         success: function (payload) {
-          console.log("access", payload);
           currentSettings.expiration_time = Date.now() + (payload.expires_in * 1000);
           currentSettings.access_token = payload.access_token;
           currentSettings.refresh_token = payload.refresh_token;
+          getData();
         },
         dataType: "JSON"
       });
@@ -76,9 +83,9 @@
         type: "POST",
         url: "https://thingproxy.freeboard.io/fetch/https://app.asana.com/-/oauth_token?grant_type=refresh_token&refresh_token=" + currentSettings.refresh_token + "&client_id=145167453298639&client_secret=3bdb7d70e3e553d2233f61feebd0cf88&redirect_uri=https://www.freeboard.io",
         success: function (payload) {
-          console.log("refresh", payload);
           currentSettings.expiration_time = Date.now() + (payload.expires_in * 1000);
           currentSettings.access_token = payload.access_token;
+          getData();
         },
         dataType: "JSON"
       });
@@ -95,7 +102,6 @@
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
         },
         success: function (payload) {
-          console.log("workspaces", payload);
           payload.data.forEach(function (workspace) {
             getSingleWorkspace(workspace.id);
           });
@@ -115,12 +121,21 @@
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
         },
         success: function (payload) {
-          console.log("single workspace", payload);
-          newData.Workspaces[payload.name] = payload;
-          updateCallback(newData);
+          formatWorkspaceEmailDomains(payload.data);
+          newData.Workspaces[payload.data.name] = payload.data;
         },
         dataType: "JSON"
       });
+    };
+
+    var formatWorkspaceEmailDomains = function (workspace) {
+      var newEmail = {};
+
+      workspace.email_domains.forEach(function (email) {
+        newEmail[email] = email;
+      });
+
+      workspace.email_domains = newEmail;
     };
 
     var getProjects = function () {
@@ -134,33 +149,115 @@
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
         },
         success: function (payload) {
-          console.log("projects", payload);
-          getProjectTasks(payload.data);
-          newData.Projects = payload;
+          payload.data.forEach(function (project) {
+            getSingleProject(project.id);
+          });
         },
         dataType: "JSON"
       });
     };
 
-    var getProjectTasks = function (projects) {
-      projects.forEach(function (project) {
-        $.ajax({
-          type: "GET",
-          url: "https://app.asana.com/api/1.0/projects/" + project.id + "/tasks",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          beforeSend: function (xhr) {
-            xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
-          },
-          success: function (payload) {
-            console.log("tasks", payload);
-            newData.ProjectTasks = payload;
-          },
-          dataType: "JSON"
-        });
+    var getSingleProject = function (id) {
+      $.ajax({
+        type: "GET",
+        url: "https://app.asana.com/api/1.0/projects/" + id,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        },
+        success: function (payload) {
+          newData.Projects[payload.data.name] = formatProjectData(payload);
+          getProjectTasks(payload.data);
+        },
+        dataType: "JSON"
       });
-    }
+    };
+
+    var formatProjectData = function (project) {
+      formatProjectMembers(project);
+      formatProjectFollowers(project);
+      formatProjectTime(project);
+      return project.data;
+    };
+
+    var formatProjectMembers = function (project) {
+      var members = {};
+
+      project.data.members.forEach(function (member) {
+        members[member.name] = member;
+      });
+
+      project.data.members = members;
+    };
+
+    var formatProjectFollowers = function (project) {
+      var followers = {};
+
+      project.data.followers.forEach(function (follower) {
+        followers[follower.name] = follower;
+      });
+
+      project.data.followers = followers;
+    };
+
+    var formatProjectTime = function (project) {
+      project.data.created_at = new Date(project.data.created_at).toLocaleString();
+      project.data.due_date = new Date(project.data.due_date).toLocaleString();
+      project.data.modified_at = new Date(project.data.modified_at).toLocaleString();
+    };
+
+    var getProjectTasks = function (project) {
+      $.ajax({
+        type: "GET",
+        url: "https://app.asana.com/api/1.0/projects/" + project.id + "/tasks",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        },
+        success: function (payload) {
+          newData.Projects[project.name].Tasks = formatProjectTasks(payload.data);
+
+          payload.data.forEach(function (task) {
+            getAllAttachments(task);
+          });
+        },
+        dataType: "JSON"
+      });
+    };
+
+    var getAllAttachments = function (task) {
+      $.ajax({
+        type: "GET",
+        url: "https://app.asana.com/api/1.0/tasks/" + task.id + "/attachments",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        },
+        success: function (payload) {
+          if (payload.data.length > 0) {
+            newData.Attachments[task.name] = payload.data;
+          }
+          updateCallback(newData);
+        },
+        dataType: "JSON"
+      });
+    };
+
+    var formatProjectTasks = function (tasks) {
+      var newTasks = {};
+
+      tasks.forEach(function (task) {
+        newTasks[task.name] = task;
+      });
+
+      return newTasks;
+    };
 
     function createRefreshTimer (interval) {
       if (refreshTimer) {
@@ -171,6 +268,7 @@
         getData();
       }, interval);
     }
+
 
     createRefreshTimer(currentSettings.refresh_time * 1000);
 
