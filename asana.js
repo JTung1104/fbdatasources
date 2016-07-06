@@ -222,6 +222,7 @@
           newData.Projects[project.name].Tasks = formatProjectTasks(payload.data);
 
           payload.data.forEach(function (task) {
+            getSubtasks(task, project);
             getAllAttachments(task);
           });
         },
@@ -248,6 +249,27 @@
         dataType: "JSON"
       });
     };
+
+    var getSubtasks = function (task, project) {
+      $.ajax({
+        type: "GET",
+        url: "https://app.asana.com/api/1.0/tasks/" + task.id + "/subtasks",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
+        },
+        success: function (payload) {
+          if (payload.data.length > 0) {
+            newData.Projects[project.name].Tasks[task.name].Subtasks = formatProjectTasks(payload.data);
+          }
+
+          updateCallback(newData);
+        },
+        dataType: "JSON"
+      });
+    }
 
     var formatProjectTasks = function (tasks) {
       var newTasks = {};
