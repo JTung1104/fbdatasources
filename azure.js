@@ -34,10 +34,17 @@
           "Content-Type": "application/json"
         },
         success: function (payload) {
+          formatDeviceTime(payload);
           updateCallback(payload);
         },
         dataType: "JSON"
       });
+    };
+
+    var formatDeviceTime = function (device) {
+      device.connectionStateUpdatedTime = new Date(device.connectionStateUpdatedTime).toLocaleString();
+      device.statusUpdatedTime = new Date(device.statusUpdatedTime).toLocaleString();
+      device.lastActivityTime = new Date(device.lastActivityTime).toLocaleString();
     };
 
     function createRefreshTimer (interval) {
