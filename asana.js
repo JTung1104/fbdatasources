@@ -174,6 +174,7 @@
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
         },
         success: function (payload) {
+          console.log("Workspace Teams", formatWorkspaceTeams(payload.data));
           newData.Workspaces[workspaceName].Teams = formatWorkspaceTeams(payload.data);
         },
         dataType: "JSON"
@@ -314,7 +315,7 @@
           }
         },
         error: function (e) {
-          console.log("Project Events", e);
+          console.log("Project Events Error", e);
           getProjectEvents(project, e.responseJSON.sync);
         },
         dataType: "JSON"
@@ -338,8 +339,7 @@
           }
         },
         error: function (e) {
-          console.log("Task Events", e);
-          getTaskEvents(task, e.responseJSON.sync);
+          getTaskEvents(task, project, e.responseJSON.sync);
         },
         dataType: "JSON"
       });
@@ -379,8 +379,6 @@
           if (payload.data.length > 0) {
             newData.Projects[project.name].Tasks[task.name].Subtasks = formatProjectTasks(payload.data);
           }
-
-          console.log(newData);
           updateCallback(newData);
         },
         dataType: "JSON"
