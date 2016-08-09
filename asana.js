@@ -147,7 +147,7 @@
         },
         success: function (payload) {
           newData.Workspaces[workspaceName].Users = formatWorkspaceUsers(payload.data);
-          console.log("Workspace Users", formatWorkspaceUsers(payload.data));
+          updateCallback(newData);
         },
         dataType: "JSON"
       });
@@ -174,8 +174,8 @@
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
         },
         success: function (payload) {
-          console.log("Workspace Teams", formatWorkspaceTeams(payload.data));
           newData.Workspaces[workspaceName].Teams = formatWorkspaceTeams(payload.data);
+          updateCallback(newData);
         },
         dataType: "JSON"
       });
@@ -308,14 +308,12 @@
           xhr.setRequestHeader ("Authorization", "Bearer " + currentSettings.access_token);
         },
         success: function (payload) {
-          console.log("Project Events", payload);
           if (payload.data.length > 0) {
             newData.Projects[project.name].Events = payload.data;
             updateCallback(newData);
           }
         },
         error: function (e) {
-          console.log("Project Events Error", e);
           getProjectEvents(project, e.responseJSON.sync);
         },
         dataType: "JSON"
@@ -423,7 +421,6 @@
         success: function (payload) {
         },
         error: function (e) {
-          console.log("Task Completion Error!", e);
         },
         dataType: "JSON"
       });
