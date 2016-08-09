@@ -86,7 +86,7 @@
     var refreshAccessToken = function () {
       $.ajax({
         type: "POST",
-        url: "https://thingproxy.freeboard.io/fetch/https://app.asana.com/-/oauth_token?grant_type=refresh_token&refresh_token=" + currentSettings.refresh_token + "&client_id=145167453298639&client_secret=3bdb7d70e3e553d2233f61feebd0cf88&redirect_uri=https://www.freeboard.io",
+        url: "https://cors-anywhere.herokuapp.com/https://app.asana.com/-/oauth_token?grant_type=refresh_token&refresh_token=" + currentSettings.refresh_token + "&client_id=145167453298639&client_secret=3bdb7d70e3e553d2233f61feebd0cf88&redirect_uri=https://www.freeboard.io",
         success: function (payload) {
           currentSettings.expiration_time = Date.now() + (payload.expires_in * 1000);
           currentSettings.access_token = payload.access_token;
@@ -338,6 +338,7 @@
           }
         },
         error: function (e) {
+          console.log("Task Events", e);
           getTaskEvents(task, e.responseJSON.sync);
         },
         dataType: "JSON"
