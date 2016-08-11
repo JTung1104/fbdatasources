@@ -34,7 +34,7 @@
           "Content-Type": "application/json"
         },
         success: function (payload) {
-          if (payload === {}) {
+          if (Object.keys(payload).length === 0) {
             getData();
           } else {
             updateCallback(formatData(payload));
@@ -52,7 +52,7 @@
         }
       };
 
-      if (payload.p1.v) {newData["Payload Type #1"]["Payload Version"] = payload.p1.v;}
+      newData["Payload Type #1"]["Payload Version"] = payload.p1.v;
       newData["Payload Type #1"]["Data"] = payload.p1.d;
       newData["Payload Type #1"]["Data"]["Device ID"] = payload.p1.d.did;
       newData["Payload Type #1"]["Data"]["Gateway ID"] = payload.p1.d.gid;
