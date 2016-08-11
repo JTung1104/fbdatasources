@@ -62,11 +62,11 @@
       });
 
       newData["Payload Type #1"]["Data"]["Last Updated"] = new Date(payload.p1.d.cdt).toLocaleString();
-      
+
       return newData;
     };
 
-    var translateDataField = function (key)
+    var translateDataField = function (key) {
       var translate = {
         did: "Device ID",
         gid: "Gateway ID",
