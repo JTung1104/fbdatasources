@@ -40,6 +40,9 @@
             updateCallback(formatData(payload));
           }
         },
+        error: function () {
+          getData();
+        },
         dataType: "JSON"
       });
     };
