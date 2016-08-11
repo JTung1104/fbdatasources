@@ -29,22 +29,39 @@
     var getData = function () {
       $.ajax({
         type: "GET",
-        url: "https://blink-data.herokuapp.com/device/" + currentSettings.device_id,
+        url: "https://blink-data.herokuapp.com/devices/" + currentSettings.device_id,
         headers: {
           "Content-Type": "application/json"
         },
         success: function (payload) {
-          formatDeviceTime(payload);
-          updateCallback(payload);
+          if (payload === {}) {
+            getData();
+          } else {
+            updateCallback(formatData(payload));
+          }
         },
         dataType: "JSON"
       });
     };
 
-    var formatDeviceTime = function (device) {
-      device.connectionStateUpdatedTime = new Date(device.connectionStateUpdatedTime).toLocaleString();
-      device.statusUpdatedTime = new Date(device.statusUpdatedTime).toLocaleString();
-      device.lastActivityTime = new Date(device.lastActivityTime).toLocaleString();
+    var formatData = function (payload) {
+      var newData = {
+        "Payload Type #1": {
+          "Payload Version": "",
+          "Data": {}
+        }
+      };
+
+      newData["Payload Type #1"]["Payload Version"] = payload.p1.v;
+      newData["Payload Type #1"]["Data"] = payload.p1.d;
+      newData["Payload Type #1"]["Data"]["Device ID"] = payload.p1.d.did;
+      newData["Payload Type #1"]["Data"]["Gateway ID"] = payload.p1.d.gid;
+      newData["Payload Type #1"]["Data"]["Time Created"] = new Date(payload.p1.d.cdt).toLocaleString();
+      delete newData["Payload Type #1"]["Data"]["did"];
+      delete newData["Payload Type #1"]["Data"]["gid"];
+      delete newData["Payload Type #1"]["Data"]["cdt"];
+
+      return newData;
     };
 
     function createRefreshTimer (interval) {
