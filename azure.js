@@ -12,8 +12,8 @@
         name: "refresh",
         display_name: "Refresh Every",
         type: "number",
-        suffix: "minutes",
-        default_value: 5
+        suffix: "seconds",
+        default_value: 10
       }
     ],
     newInstance: function (settings, newInstanceCallback, updateCallback) {
@@ -77,7 +77,7 @@
       }, interval);
     }
 
-    createRefreshTimer(currentSettings.refresh * 1000 * 60);
+    createRefreshTimer(currentSettings.refresh * 1000);
 
     self.onSettingsChanged = function (newSettings) {
       currentSettings = newSettings;
