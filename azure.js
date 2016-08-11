@@ -56,15 +56,38 @@
       };
 
       newData["Payload Type #1"]["Payload Version"] = payload.p1.v;
-      newData["Payload Type #1"]["Data"] = payload.p1.d;
-      newData["Payload Type #1"]["Data"]["Device ID"] = payload.p1.d.did;
-      newData["Payload Type #1"]["Data"]["Gateway ID"] = payload.p1.d.gid;
-      newData["Payload Type #1"]["Data"]["Time Created"] = new Date(payload.p1.d.cdt).toLocaleString();
-      delete newData["Payload Type #1"]["Data"]["did"];
-      delete newData["Payload Type #1"]["Data"]["gid"];
-      delete newData["Payload Type #1"]["Data"]["cdt"];
 
+      Object.keys(payload.p1.d).forEach(function (key) {
+        newData["Payload Type #1"]["Data"][translateDataField(key)] = payload.p1.d[key];
+      });
+
+      newData["Payload Type #1"]["Data"]["Last Updated"] = new Date(payload.p1.d.cdt).toLocaleString();
+      
       return newData;
+    };
+
+    var translateDataField = function (key)
+      var translate = {
+        did: "Device ID",
+        gid: "Gateway ID",
+        cdt: "Last Updated",
+        1: "System",
+        2: "Temperature",
+        3: "Volume (dB)",
+        4: "Humidity (%)",
+        5: "In Use",
+        6: "Is Open",
+        7: "Battery Voltage",
+        8: "Battery Level (%)",
+        9: "Light Level (%)",
+        10: "Light Level (lux)",
+        11: "Light Level(day/night)",
+        12: "Distance",
+        13: "Speed",
+        14: "Altitude"
+      };
+
+      return translate[key];
     };
 
     function createRefreshTimer (interval) {
