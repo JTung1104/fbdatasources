@@ -29,7 +29,7 @@
     var getData = function () {
       $.ajax({
         type: "GET",
-        url: "https://blink-data.herokuapp.com/devices/" + currentSettings.device_id,
+        url: "https://blink-endpoints.herokuapp.com/devices/" + currentSettings.device_id,
         headers: {
           "Content-Type": "application/json"
         },
