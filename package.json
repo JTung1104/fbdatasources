@@ -1,0 +1,24 @@
+{
+  "name": "fbdatasources",
+  "version": "1.0.0",
+  "description": "",
+  "main": "asana.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JTung1104/fbdatasources.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JTung1104/fbdatasources/issues"
+  },
+  "homepage": "https://github.com/JTung1104/fbdatasources#readme",
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "jsdom": "^9.4.2",
+    "oauth-sign": "^0.8.2"
+  }
+}

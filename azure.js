@@ -27,9 +27,13 @@
         currentSettings = settings;
 
     var getData = function () {
+      var url = Math.random(1) < .5
+              ? "https://blink-endpoints.herokuapp.com/devices/"
+              : "https://blink-endpoints2.herokuapp.com/devices/";
+
       $.ajax({
         type: "GET",
-        url: "https://blink-endpoints.herokuapp.com/devices/" + currentSettings.device_id,
+        url: url + currentSettings.device_id,
         headers: {
           "Content-Type": "application/json"
         },
@@ -39,9 +43,6 @@
           } else {
             updateCallback(formatData(payload));
           }
-        },
-        error: function () {
-          getData();
         },
         dataType: "JSON"
       });
