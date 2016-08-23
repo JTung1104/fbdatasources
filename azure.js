@@ -27,13 +27,9 @@
         currentSettings = settings;
 
     var getData = function () {
-      var url = Math.random(1) < .5
-              ? "https://blink-endpoints.herokuapp.com/devices/"
-              : "https://blink-endpoints2.herokuapp.com/devices/";
-
       $.ajax({
         type: "GET",
-        url: url + currentSettings.device_id,
+        url: getURL() + currentSettings.device_id,
         headers: {
           "Content-Type": "application/json"
         },
@@ -46,6 +42,18 @@
         },
         dataType: "JSON"
       });
+    };
+
+    var getURL = function () {
+      var number = Math.random();
+
+      if (number <= .3333) {
+        return ("https://blink-endpoints.herokuapp.com/devices/");
+      } else if (number <= .6666) {
+        return ("https://blink-endpoints2.herokuapp.com/devices/")
+      } else {
+        return ("https://blink-endpoints3.herokuapp.com/devices/");
+      }
     };
 
     var formatData = function (payload) {
