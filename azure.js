@@ -47,12 +47,14 @@
     var getURL = function () {
       var number = Math.random();
 
-      if (number <= .3333) {
+      if (number <= .25) {
         return ("https://blink-endpoints.herokuapp.com/devices/");
-      } else if (number <= .6666) {
+      } else if (number <= .5) {
         return ("https://blink-endpoints2.herokuapp.com/devices/")
-      } else {
+      } else if (number <= .75) {
         return ("https://blink-endpoints3.herokuapp.com/devices/");
+      } else {
+        return ("https://blink-endpoints4.herokuapp.com/devices/");
       }
     };
 
