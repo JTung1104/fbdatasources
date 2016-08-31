@@ -61,31 +61,31 @@
       }
     };
 
-    var getDate = function (string) {
-      if (!Date.prototype.toISOString) {
-        (function() {
+    if (!Date.prototype.toISOString) {
+      (function() {
 
-          function pad(number) {
-            var r = String(number);
-            if ( r.length === 1 ) {
-              r = '0' + r;
-            }
-            return r;
+        function pad(number) {
+          var r = String(number);
+          if ( r.length === 1 ) {
+            r = '0' + r;
           }
+          return r;
+        }
 
-          Date.prototype.toISOString = function() {
-            return this.getUTCFullYear()
-              + '-' + pad( this.getUTCMonth() + 1 )
-              + '-' + pad( this.getUTCDate() )
-              + 'T' + pad( this.getUTCHours() )
-              + ':' + pad( this.getUTCMinutes() )
-              + ':' + pad( this.getUTCSeconds() )
-              + '.' + String( (this.getUTCMilliseconds()/1000).toFixed(3) ).slice( 2, 5 )
-              + 'Z';
-          };
-        }());
-      }
+        Date.prototype.toISOString = function() {
+          return this.getUTCFullYear()
+          + '-' + pad( this.getUTCMonth() + 1 )
+          + '-' + pad( this.getUTCDate() )
+          + 'T' + pad( this.getUTCHours() )
+          + ':' + pad( this.getUTCMinutes() )
+          + ':' + pad( this.getUTCSeconds() )
+          + '.' + String( (this.getUTCMilliseconds()/1000).toFixed(3) ).slice( 2, 5 )
+          + 'Z';
+        };
+      }());
+    }
 
+    var getDate = function (string) {
       return (new Date(new Date(string).toISOString()).toLocaleString());
     };
 
@@ -103,11 +103,13 @@
         newData["Payload Type #1"]["Data"][translateDataField(key)] = payload.p1.d[key];
       });
 
+      console.log(getDate(payload.p1.d.cdt));
+      
       newData["Payload Type #1"]["Data"]["Last Updated"] = getDate(payload.p1.d.cdt);
 
       return newData;
     };
-    
+
     var translateDataField = function (key) {
       var translate = {
         did: "Device ID",
