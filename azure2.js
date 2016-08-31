@@ -61,8 +61,7 @@
       }
     };
 
-    (function() {
-
+    var getDate = function (string) {
       function pad(number) {
         var r = String(number);
         if ( r.length === 1 ) {
@@ -71,7 +70,7 @@
         return r;
       }
 
-      Date.prototype.toISOString = function() {
+      Date.prototype.toISOString = function () {
         return this.getUTCFullYear()
         + '-' + pad( this.getUTCMonth() + 1 )
         + '-' + pad( this.getUTCDate() )
@@ -81,9 +80,7 @@
         + '.' + String( (this.getUTCMilliseconds()/1000).toFixed(3) ).slice( 2, 5 )
         + 'Z';
       };
-    }());
 
-    var getDate = function (string) {
       return (new Date(new Date(string).toISOString()).toLocaleString());
     };
 
