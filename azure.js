@@ -75,10 +75,8 @@
         newData["Payload Type #1"]["Data"][translateDataField(key)] = payload.p1.d[key];
       });
 
-      newData["Payload Type #1"]["Data"]["Last Updated"] = new Date(payload.p1.d.cdt).toLocaleString();
+      newData["Payload Type #1"]["Data"]["Last Updated"] = new Date(new Date(payload.p1.d.cdt).toISOString()).toLocaleString();
 
-      console.log(payload.p1.d.cdt);
-      
       return newData;
     };
 
