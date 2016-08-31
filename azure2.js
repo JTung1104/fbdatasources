@@ -81,6 +81,9 @@
         + 'Z';
       };
 
+      console.log("String: ", string);
+      console.log("ISOString: ", new Date(string).toISOString());
+      
       return (new Date(new Date(string).toISOString()).toLocaleString());
     };
 
