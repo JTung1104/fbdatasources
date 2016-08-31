@@ -75,27 +75,37 @@
         newData["Payload Type #1"]["Data"][translateDataField(key)] = payload.p1.d[key];
       });
 
-      var date = new Date(payload.p1.d.cdt).toLocaleString();
-
-      if (date === "Invalid Date") {
-        var calendar = payload.p1.d.cdt.split(" ")[0].split("-");
-        var year = calendar[0];
-        var month = calendar[1] - 1;
-        var day = calendar[2];
-
-        var time = payload.p1.d.cdt.split(" ")[1].split(":");
-
-        var hours = time[0];
-        var minutes = time[1];
-        var seconds = time[2].split(".")[0];
-        var milliseconds = time[2].split(".")[1];
-
-        date = new Date(year, month, day, hours, minutes, seconds, milliseconds).toLocaleString();
-      }
-
-      newData["Payload Type #1"]["Data"]["Last Updated"] = date;
+      newData["Payload Type #1"]["Data"]["Last Updated"] = getDate(payload.p1.d.cdt);
 
       return newData;
+    };
+
+    var getDate = function (string) {
+      if (!Date.prototype.toISOString) {
+        (function() {
+
+          function pad(number) {
+            var r = String(number);
+            if ( r.length === 1 ) {
+              r = '0' + r;
+            }
+            return r;
+          }
+
+          Date.prototype.toISOString = function() {
+            return this.getUTCFullYear()
+              + '-' + pad( this.getUTCMonth() + 1 )
+              + '-' + pad( this.getUTCDate() )
+              + 'T' + pad( this.getUTCHours() )
+              + ':' + pad( this.getUTCMinutes() )
+              + ':' + pad( this.getUTCSeconds() )
+              + '.' + String( (this.getUTCMilliseconds()/1000).toFixed(3) ).slice( 2, 5 )
+              + 'Z';
+          };
+        }());
+      }
+
+      return (new Date(new Date(string).toISOString()).toLocaleString());
     };
 
     var translateDataField = function (key) {
