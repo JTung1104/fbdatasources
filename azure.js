@@ -77,6 +77,8 @@
 
       newData["Payload Type #1"]["Data"]["Last Updated"] = new Date(payload.p1.d.cdt).toLocaleString();
 
+      console.log(payload.p1.d.cdt);
+      
       return newData;
     };
 
