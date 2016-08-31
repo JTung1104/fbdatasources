@@ -61,25 +61,6 @@
       }
     };
 
-    var formatData = function (payload) {
-      var newData = {
-        "Payload Type #1": {
-          "Payload Version": "",
-          "Data": {}
-        }
-      };
-
-      newData["Payload Type #1"]["Payload Version"] = payload.p1.v;
-
-      Object.keys(payload.p1.d).forEach(function (key) {
-        newData["Payload Type #1"]["Data"][translateDataField(key)] = payload.p1.d[key];
-      });
-
-      newData["Payload Type #1"]["Data"]["Last Updated"] = getDate(payload.p1.d.cdt);
-
-      return newData;
-    };
-
     var getDate = function (string) {
       if (!Date.prototype.toISOString) {
         (function() {
@@ -108,6 +89,25 @@
       return (new Date(new Date(string).toISOString()).toLocaleString());
     };
 
+    var formatData = function (payload) {
+      var newData = {
+        "Payload Type #1": {
+          "Payload Version": "",
+          "Data": {}
+        }
+      };
+
+      newData["Payload Type #1"]["Payload Version"] = payload.p1.v;
+
+      Object.keys(payload.p1.d).forEach(function (key) {
+        newData["Payload Type #1"]["Data"][translateDataField(key)] = payload.p1.d[key];
+      });
+
+      newData["Payload Type #1"]["Data"]["Last Updated"] = getDate(payload.p1.d.cdt);
+
+      return newData;
+    };
+    
     var translateDataField = function (key) {
       var translate = {
         did: "Device ID",
