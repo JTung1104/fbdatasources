@@ -61,6 +61,26 @@
       }
     };
 
+    var getDate = function (string) {
+      var date = new Date(string).toLocaleString();
+
+      if (date === "Invalid Date") {
+        date = string.split(" ");
+        var calendarPart = date[0].split("-");
+        var timePart = date[1].split(":");
+        var year = calendarPart[0];
+        var month = calendarPart[1] - 1;
+        var day = calendarPart[2];
+        var hours = timePart[0];
+        var minutes = timePart[1];
+        var seconds = timePart[2].split(".")[0];
+
+        return new Date(year, month, day, hours, minutes, seconds).toLocaleString();
+      }
+
+      return date;
+    };
+
     var formatData = function (payload) {
       var newData = {
         "Payload Type #1": {
@@ -75,9 +95,7 @@
         newData["Payload Type #1"]["Data"][translateDataField(key)] = payload.p1.d[key];
       });
 
-      newData["Payload Type #1"]["Data"]["Last Updated"] = new Date(payload.p1.d.cdt).toLocaleString();
-
-      console.log(payload.p1.d.cdt);
+      newData["Payload Type #1"]["Data"]["Last Updated"] = getDate(payload.p1.d.cdt);
 
       return newData;
     };
