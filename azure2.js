@@ -64,7 +64,7 @@
     var getDate = function (string) {
       var date = new Date(string).toLocaleString();
 
-      if (date === "Invalid String") {
+      if (date === "Invalid Date") {
         date = string.split(" ");
         var calendarPart = date[0].split("-");
         var timePart = date[1].split(":");
