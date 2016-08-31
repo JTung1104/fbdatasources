@@ -62,29 +62,23 @@
     };
 
     var getDate = function (string) {
-      function pad(number) {
-        var r = String(number);
-        if ( r.length === 1 ) {
-          r = '0' + r;
-        }
-        return r;
+      var date = new Date(string).toLocaleString();
+
+      if (date === "Invalid String") {
+        date = string.split(" ");
+        var calendarPart = date[0].split("-");
+        var timePart = date[1].split(":");
+        var year = calendarPart[0];
+        var month = calendarPart[1] - 1;
+        var day = calendarPart[2];
+        var hours = timePart[0];
+        var minutes = timePart[1];
+        var seconds = timePart[2].split(".")[0];
+
+        return new Date(year, month, day, hours, minutes, seconds).toLocaleString();
       }
 
-      Date.prototype.toISOString = function () {
-        return this.getUTCFullYear()
-        + '-' + pad( this.getUTCMonth() + 1 )
-        + '-' + pad( this.getUTCDate() )
-        + 'T' + pad( this.getUTCHours() )
-        + ':' + pad( this.getUTCMinutes() )
-        + ':' + pad( this.getUTCSeconds() )
-        + '.' + String( (this.getUTCMilliseconds()/1000).toFixed(3) ).slice( 2, 5 )
-        + 'Z';
-      };
-
-      console.log("String: ", string);
-      console.log("ISOString: ", new Date(string).toISOString());
-      
-      return (new Date(new Date(string).toISOString()).toLocaleString());
+      return date;
     };
 
     var formatData = function (payload) {
@@ -100,8 +94,6 @@
       Object.keys(payload.p1.d).forEach(function (key) {
         newData["Payload Type #1"]["Data"][translateDataField(key)] = payload.p1.d[key];
       });
-
-      console.log(getDate(payload.p1.d.cdt));
 
       newData["Payload Type #1"]["Data"]["Last Updated"] = getDate(payload.p1.d.cdt);
 
