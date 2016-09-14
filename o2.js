@@ -38,12 +38,79 @@
       }
     };
 
-    var getData = function () {
+    var createInputField = function () {
+      newData.Input = `
+        <div style="height:100%;width:100%;display:flex;flex-direction:column;justify-content:space-around;align-items:center;">
+          <label style="display:flex;flex-direction:column;">Serial Number
+            <input id="serial_number_input" style="display:inline-block;"/>
+          </label>
+          <div style="display:flex;flex-direction:column;justify-content:space-around;align-items:center;"><div>Start Date</div>
+          `
+      newData.Input += getSelectMonths("start_month");
+      newData.Input += getSelectYears("start_year");
+      newData.Input += "</div>";
+      newData.Input += "<div style=\"display:flex;flex-direction:column;justify-content:space-around;align-items:center;\"><div>End Date</div>";
+      newData.Input += getSelectMonths("end_month");
+      newData.Input += getSelectYears("end_year");
+      newData.Input += "</div><button id=\"submit\">SET</button></div>"
+
+      $('body').on('click', '#submit', function () {
+        var serialNumber = document.getElementById("serial_number_input").value;
+        var startMonth = document.getElementById("start_month").value;
+        var startYear = document.getElementById("start_year").value;
+        var endMonth = document.getElementById("end_month").value;
+        var endYear = document.getElementById("end_year").value;
+
+        if (serialNumber) {
+          currentSettings.serial_number = document.getElementById("serial_number_input").value;
+          if (startMonth && startYear) {var startTime = new Date(startYear, startMonth).getTime()}
+          if (endMonth && endYear) {var endTime = new Date(endYear, endMonth).getTime()}
+          getData(startTime, endTime);
+        }
+      });
+    };
+
+    var getSelectYears = function (name) {
+      var selectYears = `<select id=${name}>
+                          <option value="undefined">Select a year...</option>`;
+      var nextYear = new Date().getYear() + 2;
+
+      for (var i = 70; i < nextYear; i++) {
+        selectYears += "<option value=\"" + (1900 + i) + "\">" + (1900 + i) + "</option>";
+      }
+
+      selectYears += "</select>";
+
+      return selectYears;
+    };
+
+    var getSelectMonths = function (name) {
+      return (
+        `<select id="${name}">
+          <option value="undefined">Select a month...</option>
+          <option value="0">January</option>
+          <option value="1">February</option>
+          <option value="2">March</option>
+          <option value="3">April</option>
+          <option value="4">May</option>
+          <option value="5">June</option>
+          <option value="6">July</option>
+          <option value="7">August</option>
+          <option value="8">September</option>
+          <option value="9">October</option>
+          <option value="10">November</option>
+          <option value="11">December</option>
+        </select>`);
+    };
+
+    var getData = function (startTime, endTime) {
+      if (typeof newData.Input === "undefined") {createInputField();}
+
       $.ajax({
         type: "GET",
         url: "https://corsanywhere.herokuapp.com/http://www.o2pocdata.com/rdm-data/" + currentSettings.serial_number + "/refresh",
         success: function (payload) {
-          getReports();
+          getReports(startTime, endTime);
           formatRDMData(payload);
           updateCallback(newData);
         },
@@ -56,7 +123,7 @@
       });
     };
 
-    var getReports = function () {
+    var getReports = function (startTime, endTime) {
       var url = "https://cors-anywhere.herokuapp.com/http://www.o2pocdata.com/reports/?fields=SN&SN=" + currentSettings.serial_number + "&fields=MEID&MEID=&fields=date&fields=TimStrt&fields=MinsLong&fields=SWV&fields=HWV&fields=CellSS&fields=MtrRPM&fields=MtrAmps&fields=MtrTmp&fields=ContSet&fields=PulsSet&fields=MeasFlow&fields=UnitTmp&fields=O2Tmp&fields=TankPrs&fields=HosePrs&fields=BaroPrs&fields=Pur&fields=VIn&fields=CarVIn&fields=BattPer&fields=BattMa&fields=RunTime&fields=O2PurSmpl&fields=Pwrs&fields=CellRst&fields=Err&fields=ACBPM&fields=CarBPM&fields=BatBPM&fields=Batt&fields=Alrm&fields=Loc&fields=CellLoc&fields=Mode&fields=Cks&limit=0"
 
       $.ajax({
@@ -71,8 +138,7 @@
           });
           $(".o2-reports").remove();
 
-          formatReports(reports);
-          console.log(newData);
+          formatReports(reports, startTime, endTime);
           updateCallback(newData);
         },
         error: function (e) {
@@ -167,7 +233,7 @@
       newData["RDM"]["Atmospheric Pressure (pounds per square inch)"] = words[26].slice(words[26].indexOf(":") + 1);
     };
 
-    var formatReports = function (array) {
+    var formatReports = function (array, startTime, endTime) {
       array.forEach(function (report) {
         replaceLineBreaksInReport(report);
         formatReportAlarms(report);
@@ -178,7 +244,20 @@
         formatReportBatt(report);
         report.date = getDate(report.date);
         report.TimStrt = getDate(report.TimStrt);
-        newData["Historical"][report.date] = report;
+
+        if (startTime && endTime) {
+          if (startTime && new Date(report.date).getTime() >= startTime) {
+            if (endTime && new Date(report.date).getTime() <= endTime) {
+              newData["Historical"][report.date] = report;
+            }
+          }
+        } else if (startTime) {
+          if (new Date(report.date).getTime() >= startTime) {newData["Historical"][report.date] = report;}
+        } else if (endTime) {
+          if (new Date(report.date).getTime() <= endTime) {newData["Historical"][report.date] = report;}
+        } else {
+          newData["Historical"][report.date] = report;
+        }
       });
     };
 
