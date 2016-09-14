@@ -12,6 +12,20 @@
         type: "text"
       },
       {
+        name: "start_time",
+        display_name: "Start Time",
+        type: "number",
+        description: "Leave this field blank.",
+        default_value: 0
+      },
+      {
+        name: "end_time",
+        display_name: "End Time",
+        type: "number",
+        description: "Leave this field blank.",
+        default_value: 0
+      },
+      {
         name: "refresh_time",
         display_name: "Refresh Every",
         type: "number",
@@ -62,9 +76,9 @@
         var endYear = document.getElementById("end_year").value;
 
         if (serialNumber) {currentSettings.serial_number = serialNumber;}
-        if (startMonth && startYear) {var startTime = new Date(startYear, startMonth).getTime()}
-        if (endMonth && endYear) {var endTime = new Date(endYear, endMonth).getTime()}
-        getData(startTime, endTime);
+        if (startMonth && startYear) {currentSettings.start_time = new Date(startYear, startMonth).getTime()}
+        if (endMonth && endYear) {currentSettings.end_time = new Date(endYear, endMonth).getTime()}
+        getData(currentSettings.start_time, currentSettings.end_time);
       });
     };
 
@@ -102,6 +116,15 @@
     };
 
     var getData = function (startTime, endTime) {
+      newData = {
+        "Historical": {},
+        "RDM": {
+          "Software Versions": {},
+          "Inlet Side Battery": {},
+          "Exhaust Side Battery": {}
+        }
+      };
+
       if (typeof newData.Input === "undefined") {createInputField();}
 
       $.ajax({
@@ -243,6 +266,7 @@
         report.date = getDate(report.date);
         report.TimStrt = getDate(report.TimStrt);
 
+        debugger
         if (startTime && endTime) {
           if (startTime && new Date(report.date).getTime() >= startTime) {
             if (endTime && new Date(report.date).getTime() <= endTime) {
