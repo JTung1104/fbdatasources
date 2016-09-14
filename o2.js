@@ -61,12 +61,10 @@
         var endMonth = document.getElementById("end_month").value;
         var endYear = document.getElementById("end_year").value;
 
-        if (serialNumber) {
-          currentSettings.serial_number = document.getElementById("serial_number_input").value;
-          if (startMonth && startYear) {var startTime = new Date(startYear, startMonth).getTime()}
-          if (endMonth && endYear) {var endTime = new Date(endYear, endMonth).getTime()}
-          getData(startTime, endTime);
-        }
+        if (serialNumber) {currentSettings.serial_number = serialNumber;}
+        if (startMonth && startYear) {var startTime = new Date(startYear, startMonth).getTime()}
+        if (endMonth && endYear) {var endTime = new Date(endYear, endMonth).getTime()}
+        getData(startTime, endTime);
       });
     };
 
