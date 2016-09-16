@@ -50,14 +50,22 @@
     var getURL = function () {
       var number = Math.random();
 
-      if (number <= .25) {
+      if (number <= .125) {
         return ("https://blink-endpoints.herokuapp.com/devices/");
-      } else if (number <= .5) {
+      } else if (number <= .25) {
         return ("https://blink-endpoints2.herokuapp.com/devices/")
-      } else if (number <= .75) {
+      } else if (number <= .375) {
         return ("https://blink-endpoints3.herokuapp.com/devices/");
-      } else {
+      } else if (number <= .5) {
         return ("https://blink-endpoints4.herokuapp.com/devices/");
+      } else if (number <= .625) {
+        return ("https://blink-endpoints5.herokuapp.com/devices/");
+      } else if (number <= .75) {
+        return ("https://blink-endpoints6.herokuapp.com/devices/");
+      } else if (number <= .875) {
+        return ("https://blink-endpoints7.herokuapp.com/devices/");
+      } else {
+        return ("https://blink-endpoints8.herokuapp.com/devices/");
       }
     };
 
