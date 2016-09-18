@@ -288,8 +288,10 @@
         var data = report.Alrm.split("<td>");
         report.Alrm = {};
         for (var i = 1; i < data.length; i += 2) {
-          report.Alrm.Time = getDate(data[i].slice(0, data[i].indexOf("</td>")));
-          report.Alrm.Fault = data[i + 1].slice(0, data[i + 1].indexOf("</td>"));
+          var date = getDate(data[i].slice(0, data[i].indexOf("</td>")));
+          report.Alrm[date] = {};
+          report.Alrm[date].Time = date;
+          report.Alrm[date].Fault = data[i + 1].slice(0, data[i + 1].indexOf("</td>"));
         }
       }
     };
