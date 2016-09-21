@@ -51,7 +51,7 @@
 				//Append the header and body
                 if(stateElement.find('.added-header').length > 0){
                 }else{
-        		stateElement.find('thead').append(timestampRow);
+        		// stateElement.find('thead').append(timestampRow);
 				stateElement.find('thead').append(headerRow);
                 }
                 stateElement.find('.list-table').prepend(bodyHTML);
