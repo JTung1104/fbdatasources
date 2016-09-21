@@ -4,9 +4,11 @@
 		var currentSettings = settings;
 
     var getData = function () {
+			updateCallback();
     };
 
 		self.updateNow = function () {
+			getData();
 		};
 
 		self.onDispose = function () {
