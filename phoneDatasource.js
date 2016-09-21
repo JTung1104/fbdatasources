@@ -4,7 +4,7 @@
 		var currentSettings = settings;
 
     var getData = function () {
-			updateCallback();
+			updateCallback({});
     };
 
 		self.updateNow = function () {
