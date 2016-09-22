@@ -25,20 +25,23 @@
 		var stateObject = {};
 
     var sendSMS = function (message) {
-      if (currentSettings.sms_notifications && currentSettings.phone_number) {
-        var phoneNumber = currentSettings.phone_number;
-        if (phoneNumber.length === 9) {phoneNumber = "1" + phoneNumber;}
+      if (currentSettings.sms_notifications && currentSettings.phone_numbers.length > 0) {
+        var phoneNumbers = currentSettings.phone_numbers;
 
-        $.ajax({
-          type: "POST",
-          url: "https://globeowl-twilio.herokuapp.com/alert/+" + phoneNumber,
-          data: {
-            message: message
-          },
-          success: function (payload) {
-            console.log(payload);
-          },
-          dataType: "JSON"
+        phoneNumbers.forEach(function (phoneNumber) {
+          if (phoneNumber.phone_number.length === 9) {phoneNumber.phone_number = "1" + phoneNumber.phone_number;}
+
+          $.ajax({
+            type: "POST",
+            url: "https://globeowl-twilio.herokuapp.com/alert/+" + phoneNumber.phone_number,
+            data: {
+              message: message
+            },
+            success: function (payload) {
+              console.log(payload);
+            },
+            dataType: "JSON"
+          });
         });
       }
     };
@@ -86,7 +89,7 @@
 					stateElement.find('thead').hide();
 				}
 
-			}
+			  }
         }
 
         this.render = function (element) {
@@ -100,13 +103,26 @@
         }
 
         this.onCalculatedValueChanged = function (settingName, newValue) {
-            if (newValue >= currentSettings.alert_point) {
-              stateObject[settingName] = newValue;
-              var message = (typeof currentSettings.units === "undefined") ? `${currentSettings.title} has ${currentSettings.title} has reached a value of ${newValue} which is greater than the ${currentSettings.alert_point} alert point!`
-                                                                           : `${currentSettings.title} has reached a value of ${newValue} ${currentSettings.units} which is greater than the ${currentSettings.alert_point} ${currentSettings.units} alert point!`
-              sendSMS(message);
-              updateState();
-            }
+          if (currentSettings.alert_points.length > 0) {
+            var alertPoints = currentSettings.alert_points.sort(function (a, b) {
+              return b.alert_point - a.alert_point; // sort descending because you only want the alert to trigger once
+            });
+
+            var alreadyAlerted = false;
+
+            alertPoints.forEach(function(alertPoint) {
+              if (alreadyAlerted === false) {
+                if (newValue >= alertPoint.alert_point) {
+                  stateObject[settingName] = newValue;
+                  var message = (typeof currentSettings.units === "undefined") ? `${currentSettings.title} has reached a value of ${newValue} which is greater than the ${alertPoint.alert_point} alert point!`
+                  : `${currentSettings.title} has reached a value of ${newValue} ${currentSettings.units} which is greater than the ${alertPoint.alert_point} ${currentSettings.units} alert point!`
+                  sendSMS(message);
+                  alreadyAlerted = true;
+                  updateState();
+                }
+              }
+            });
+          }
         }
 
         this.onDispose = function () {
@@ -148,11 +164,17 @@
                 type: "text"
             },
             {
-              name: "alert_point",
-              display_name: "Alert Point",
-              default_value: 0,
-              type: "number",
-              description: "You will only receive notifications for values greater than or equal to the alert point."
+              name: "alert_points",
+              display_name: "Alert Points",
+              type: "array",
+              description: "You will only receive notifications for values greater than or equal to any alert points you set.",
+              settings: [
+                {
+                  name: "alert_point",
+                  display_name: "Alert Point",
+                  type: "number"
+                }
+              ]
             },
             {
               name: "sms_notifications",
@@ -162,10 +184,17 @@
               description: "You will receive SMS notifications at the phone number you input."
             },
             {
-              name: "phone_number",
-              display_name: "Phone Number",
-              type: "text",
-              description: "Please include country code and remove all symbols. e.g. 12223334444"
+              name: "phone_numbers",
+              display_name: "Phone Numbers",
+              type: "array",
+              description: "Please include country code and remove all symbols. e.g. 12223334444",
+              settings: [
+                {
+                  name: "phone_number",
+                  display_name: "Phone Number",
+                  type: "text"
+                }
+              ]
             }
         ],
         newInstance: function (settings, newInstanceCallback) {
