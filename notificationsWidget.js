@@ -59,10 +59,11 @@
                       $(this).removeClass('highlight');
                    });
 				try {
+            var value = (typeof currentSettings.units === "undefined") ? stateObject.value : (stateObject.value + " " + currentSettings.units);
 						classObject[stateObject.header] = 'td-' + classCounter;
 						headerRow.append($('<th/>').addClass('td-'+0).html("Message"));
 						headerRow.append($('<th/>').addClass('td-'+1).html((stateObject.header) ? stateObject.header:"Timestamp"));
-						rowHTML.append($('<td/>').addClass('td-' + 1).html(stateObject.value + " " + currentSettings.units)).append($('<td class="td-2"></td>').append($('<time class="timeago" datetime="'+(new Date()).toISOString()+'">moments ago</time>').timeago()));
+						rowHTML.append($('<td/>').addClass('td-' + 1).html(value)).append($('<td class="td-2"></td>').append($('<time class="timeago" datetime="'+(new Date()).toISOString()+'">moments ago</time>').timeago()));
 						bodyHTML.append(rowHTML);
 				} catch (e) {
 					console.log(e);
