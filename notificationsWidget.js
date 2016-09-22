@@ -25,18 +25,22 @@
 		var stateObject = {};
 
     var sendSMS = function (message) {
-      if (datasources.Phone && datasources.Phone.phone_number)
-      $.ajax({
-        type: "POST",
-        url: "https://globeowl-twilio.herokuapp.com/alert/+19174129241",
-        data: {
-          message: "Herro Kitty"
-        },
-        success: function (payload) {
-          console.log(payload);
-        },
-        dataType: "JSON"
-      });
+      if (currentSettings.sms_notifications && datasources.Phone && datasources.Phone.phone_number) {
+        var phoneNumber = datasources.Phone.phone_number;
+        if (phoneNumber.length === 9) {phoneNumber = "1" + phoneNumber;}
+
+        $.ajax({
+          type: "POST",
+          url: "https://globeowl-twilio.herokuapp.com/alert/+" + phoneNumber,
+          data: {
+            message: message
+          },
+          success: function (payload) {
+            console.log(payload);
+          },
+          dataType: "JSON"
+        });
+      }
     };
 
 		function updateState() {
@@ -97,6 +101,7 @@
         this.onCalculatedValueChanged = function (settingName, newValue) {
             if (newValue >= currentSettings.alert_point) {
               stateObject[settingName] = newValue;
+              sendSMS(`${currentSettings.title} has reached a value of ${newValue} ${currentSettings.units} which is greater than the ${currentSettings.alert_point}!`)
               updateState();
             }
         }
@@ -145,6 +150,13 @@
               default_value: 0,
               type: "number",
               description: "You will only receive notifications for values greater than or equal to the alert point."
+            },
+            {
+              name: "sms_notifications",
+              display_name: "SMS Notifications",
+              default_value: false,
+              type: "boolean",
+              description: "You will receive SMS notifications at the phone number you input in the Phone datasource."
             }
         ],
         newInstance: function (settings, newInstanceCallback) {
