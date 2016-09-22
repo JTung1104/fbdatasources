@@ -161,7 +161,8 @@
             {
               name: "phone_number",
               display_name: "Phone Number",
-              type: "text"
+              type: "text",
+              description: "Please include country code and remove all symbols. e.g. 12223334444"
             }
         ],
         newInstance: function (settings, newInstanceCallback) {
