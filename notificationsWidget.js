@@ -46,6 +46,26 @@
       }
     };
 
+    var sendEmail = function (message) {
+      if (currentSettings.email_notifications && currentSettings.emails.length > 0) {
+        var emails = currentSettings.emails;
+
+        emails.forEach(function (email) {
+          $.ajax({
+            type: "POST",
+            url: "https://globeowl-twilio.herokuapp.com/alert/email/" + email.email,
+            data: {
+              message: message
+            },
+            success: function (payload) {
+              console.log(payload);
+            },
+            dataType: "JSON"
+          });
+        });
+      }
+    };
+
 		function updateState() {
 			var bodyHTML = $('<tbody/>');
 			var classObject = {};
@@ -181,7 +201,7 @@
               display_name: "SMS Notifications",
               default_value: false,
               type: "boolean",
-              description: "You will receive SMS notifications at the phone number you input."
+              description: "You will receive SMS notifications at the phone numbers you input."
             },
             {
               name: "phone_numbers",
@@ -192,6 +212,25 @@
                 {
                   name: "phone_number",
                   display_name: "Phone Number",
+                  type: "text"
+                }
+              ]
+            },
+            {
+              name: "email_notifications",
+              display_name: "Email Notifications",
+              default_value: false,
+              type: "boolean",
+              description: "You will receive Email notifications at the phone numbers you input."
+            },
+            {
+              name: "emails",
+              display_name: "Emails",
+              type: "array",
+              settings: [
+                {
+                  name: "email",
+                  display_name: "Email",
                   type: "text"
                 }
               ]
