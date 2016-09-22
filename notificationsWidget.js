@@ -25,8 +25,8 @@
 		var stateObject = {};
 
     var sendSMS = function (message) {
-      if (currentSettings.sms_notifications && datasources.Phone && datasources.Phone.phone_number) {
-        var phoneNumber = datasources.Phone.phone_number;
+      if (currentSettings.sms_notifications && currentSettings.phone_number) {
+        var phoneNumber = currentSettings.phone_number;
         if (phoneNumber.length === 9) {phoneNumber = "1" + phoneNumber;}
 
         $.ajax({
@@ -101,7 +101,7 @@
         this.onCalculatedValueChanged = function (settingName, newValue) {
             if (newValue >= currentSettings.alert_point) {
               stateObject[settingName] = newValue;
-              sendSMS(`${currentSettings.title} has reached a value of ${newValue} ${currentSettings.units} which is greater than the ${currentSettings.alert_point}!`)
+              sendSMS(`${currentSettings.title} has reached a value of ${newValue} ${currentSettings.units} which is greater than the ${currentSettings.alert_point}!`);
               updateState();
             }
         }
