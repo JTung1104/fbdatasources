@@ -221,7 +221,7 @@
               display_name: "Email Notifications",
               default_value: false,
               type: "boolean",
-              description: "You will receive Email notifications at the phone numbers you input."
+              description: "You will receive Email notifications at the email addresses you input."
             },
             {
               name: "emails",
