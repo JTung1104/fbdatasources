@@ -156,7 +156,12 @@
               display_name: "SMS Notifications",
               default_value: false,
               type: "boolean",
-              description: "You will receive SMS notifications at the phone number you input in the Phone datasource."
+              description: "You will receive SMS notifications at the phone number you input."
+            },
+            {
+              name: "phone_number",
+              display_name: "Phone Number",
+              type: "text"
             }
         ],
         newInstance: function (settings, newInstanceCallback) {
