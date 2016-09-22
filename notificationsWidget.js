@@ -137,6 +137,7 @@
                   var message = (typeof currentSettings.units === "undefined") ? `${currentSettings.title} has reached a value of ${newValue} which is greater than the ${alertPoint.alert_point} alert point!`
                   : `${currentSettings.title} has reached a value of ${newValue} ${currentSettings.units} which is greater than the ${alertPoint.alert_point} ${currentSettings.units} alert point!`
                   sendSMS(message);
+                  sendEmail(message);
                   alreadyAlerted = true;
                   updateState();
                 }
