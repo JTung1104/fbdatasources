@@ -111,8 +111,8 @@
 
         this.getHeight = function () {
 			    var height = Math.ceil(stateElement.height() / 50);
-          height = 4;
-			    return (height > 0 ? height : 2);
+          height = 2;
+			    return (height > 0 ? height : 3);
         }
 
         this.onSettingsChanged(settings);
