@@ -24,6 +24,21 @@
     var currentSettings = settings;
 		var stateObject = {};
 
+    var sendSMS = function (message) {
+      if (datasources.Phone && datasources.Phone.phone_number)
+      $.ajax({
+        type: "POST",
+        url: "https://globeowl-twilio.herokuapp.com/alert/+19174129241",
+        data: {
+          message: "Herro Kitty"
+        },
+        success: function (payload) {
+          console.log(payload);
+        },
+        dataType: "JSON"
+      });
+    };
+
 		function updateState() {
 			var bodyHTML = $('<tbody/>');
 			var classObject = {};
@@ -43,7 +58,7 @@
 						classObject[stateObject.header] = 'td-' + classCounter;
 						headerRow.append($('<th/>').addClass('td-'+0).html("Message"));
 						headerRow.append($('<th/>').addClass('td-'+1).html((stateObject.header) ? stateObject.header:"Timestamp"));
-						rowHTML.append($('<td/>').addClass('td-' + 1).html(stateObject.value)).append($('<td class="td-2"></td>').append($('<time class="timeago" datetime="'+(new Date()).toISOString()+'">moments ago</time>').timeago()));
+						rowHTML.append($('<td/>').addClass('td-' + 1).html(stateObject.value + " " + currentSettings.units)).append($('<td class="td-2"></td>').append($('<time class="timeago" datetime="'+(new Date()).toISOString()+'">moments ago</time>').timeago()));
 						bodyHTML.append(rowHTML);
 				} catch (e) {
 					console.log(e);
@@ -73,8 +88,6 @@
             $(element).append(titleElement).append(stateElement);
         }
 
-
-
         this.onSettingsChanged = function (newSettings) {
             currentSettings = newSettings;
             titleElement.html((_.isUndefined(newSettings.title) ? "" : newSettings.title));
@@ -82,17 +95,19 @@
         }
 
         this.onCalculatedValueChanged = function (settingName, newValue) {
-			stateObject[settingName] = newValue;
-            updateState();
+            if (newValue >= currentSettings.alert_point) {
+              stateObject[settingName] = newValue;
+              updateState();
+            }
         }
 
         this.onDispose = function () {
         }
 
         this.getHeight = function () {
-			var height = Math.ceil(stateElement.height() / 50);
-            height = 4;
-			return (height > 0 ? height : 3);
+			    var height = Math.ceil(stateElement.height() / 50);
+          height = 4;
+			    return (height > 0 ? height : 2);
         }
 
         this.onSettingsChanged(settings);
@@ -108,16 +123,28 @@
                 display_name: "Title",
                 type: "text"
             },
-			{
+			      {
                 name: "show_header",
                 display_name: "Show Headers",
-				default_value: true,
+				        default_value: true,
                 type: "boolean"
             },
-			{
+			      {
                 name: "value",
                 display_name: "Value",
                 type: "calculated",
+            },
+            {
+                name: "units",
+                display_name: "Units",
+                type: "text"
+            },
+            {
+              name: "alert_point",
+              display_name: "Alert Point",
+              default_value: 0,
+              type: "number",
+              description: "You will only receive notifications for values greater than or equal to the alert point."
             }
         ],
         newInstance: function (settings, newInstanceCallback) {
