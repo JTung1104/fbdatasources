@@ -101,7 +101,9 @@
         this.onCalculatedValueChanged = function (settingName, newValue) {
             if (newValue >= currentSettings.alert_point) {
               stateObject[settingName] = newValue;
-              sendSMS(`${currentSettings.title} has reached a value of ${newValue} ${currentSettings.units} which is greater than the ${currentSettings.alert_point}!`);
+              var message = (typeof currentSettings.units === "undefined") ? `${currentSettings.title} has ${currentSettings.title} has reached a value of ${newValue} which is greater than the ${currentSettings.alert_point} alert point!`
+                                                                           : `${currentSettings.title} has reached a value of ${newValue} ${currentSettings.units} which is greater than the ${currentSettings.alert_point} ${currentSettings.units} alert point!`
+              sendSMS(message);
               updateState();
             }
         }
