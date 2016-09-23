@@ -27,9 +27,14 @@
         currentSettings = settings;
 
     var getData = function () {
+      var version;
+      if (currentSettings.unit_name === "GOUnit_1") {version = "i";}
+      if (currentSettings.unit_name === "GOUnit_2") {version = "j";}
+      if (currentSettings.unit_name === "GOUnit_3") {version = "k";}
+
       $.ajax({
         type: "GET",
-        url: "https://globe-owl-data.herokuapp.com/data/",
+        url: "https://globe-owl-data.herokuapp.com/data/" + version,
         success: function (payload) {
           updateCallback(payload);
         }
