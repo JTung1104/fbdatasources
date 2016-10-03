@@ -48,7 +48,7 @@
     function getAccessToken () {
       $.ajax({
         type: "POST",
-        url: "https://thingproxy.freeboard.io/fetch/https://api.home.nest.com/oauth2/access_token?client_id=1c018519-6992-43af-a75e-a8645cb9c82e&code=" + currentSettings.authorization_code + "&client_secret=7bFoutPTlsTcC195UfsiZZBCQ&grant_type=authorization_code",
+        url: "https://cors-anywhere.herokuapp.com/https://api.home.nest.com/oauth2/access_token?client_id=1c018519-6992-43af-a75e-a8645cb9c82e&code=" + currentSettings.authorization_code + "&client_secret=7bFoutPTlsTcC195UfsiZZBCQ&grant_type=authorization_code",
         data: {
           code: currentSettings.authorization_code,
           client_id: "1c018519-6992-43af-a75e-a8645cb9c82e",
@@ -93,7 +93,7 @@
             newData[devices[deviceType][device].name_long] = devices[deviceType][device];
             if (deviceType === "cameras") {
               var camera = newData[devices[deviceType][device].name_long];
-              camera.stream_code = camera.public_share_url.slice(camera.public_share_url.length - 6);
+              camera.stream_code = camera.public_share_url.slice(camera.public_share_url.length - 10);
               formatCameraTime(camera);
             } else if (deviceType === "thermostats") {
               var thermostat = newData[devices[deviceType][device].name_long];
