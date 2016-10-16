@@ -27,24 +27,26 @@
         currentSettings = settings;
 
     var getData = function () {
-      $.ajax({
-        type: "GET",
-        url: getURL() + currentSettings.device_id,
-        headers: {
-          "Content-Type": "application/json"
-        },
-        success: function (payload) {
-          if (Object.keys(payload).length === 0) {
+      if (currentSettings.device_id) {
+        $.ajax({
+          type: "GET",
+          url: getURL() + currentSettings.device_id,
+          headers: {
+            "Content-Type": "application/json"
+          },
+          success: function (payload) {
+            if (Object.keys(payload).length === 0) {
+              getData();
+            } else {
+              updateCallback(formatData(payload));
+            }
+          },
+          error: function () {
             getData();
-          } else {
-            updateCallback(formatData(payload));
-          }
-        },
-        error: function () {
-          getData();
-        },
-        dataType: "JSON"
-      });
+          },
+          dataType: "JSON"
+        });
+      }
     };
 
     var getURL = function () {
