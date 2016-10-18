@@ -27,7 +27,7 @@
         currentSettings = settings;
 
     var getData = function () {
-      if (currentSettings.device_id && currentsSettings.device_id.length === 16) {
+      if (currentSettings.device_id && currentSettings.device_id.length === 16) {
         $.ajax({
           type: "GET",
           url: getURL() + currentSettings.device_id,
