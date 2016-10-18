@@ -35,11 +35,7 @@
             "Content-Type": "application/json"
           },
           success: function (payload) {
-            if (Object.keys(payload).length === 0) {
-              getData();
-            } else {
-              updateCallback(formatData(payload));
-            }
+            updateCallback(formatData(payload));
           },
           dataType: "JSON"
         });
