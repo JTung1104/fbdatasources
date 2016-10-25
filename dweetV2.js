@@ -19,7 +19,7 @@
         type: "text"
       }
     ],
-    external_scripts: ["https://www.dropbox.com/s/4r1c84tl82yg49e/dweet.io.js?dl=1"],
+    external_scripts: ["https://www.dropbox.com/s/xcj6swmplobnur7/dweet.io.js?dl=1"],
     newInstance: function (settings, newInstanceCallback, updateCallback) {
       newInstanceCallback(new dweetV2Datasource(settings, updateCallback));
     }
