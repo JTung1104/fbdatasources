@@ -32,7 +32,7 @@
     function getData () {
       if (currentSettings.account_token && currentSettings.thing_name) {
         dweetio.token = currentSettings.account_token;
-        dweetio.get_latest_dweet_for(currentSettings.thing_name, updateCallback);
+        dweetio.get_latest_dweet_for(currentSettings.thing_name, currentSettings.read_key, updateCallback);
         dweetio.listen_for(currentSettings.thing_name, currentSettings.read_key, updateCallback, currentSettings.account_token);
       }
     }
