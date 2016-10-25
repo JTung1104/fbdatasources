@@ -19,7 +19,7 @@
         type: "text"
       }
     ],
-    external_scripts: ["https://dl.dropboxusercontent.com/content_link/9MQxA8LDhn27nnOgqevO4ZfV2NBjYMRo30jie47NvVFTSlmBbUg6TGWhcE9L6ltQ/file"],
+    external_scripts: ["https://www.dropbox.com/s/xcj6swmplobnur7/dweet.io.js?raw=1"],
     newInstance: function (settings, newInstanceCallback, updateCallback) {
       newInstanceCallback(new dweetV2Datasource(settings, updateCallback));
     }
