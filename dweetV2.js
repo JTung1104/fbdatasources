@@ -38,9 +38,10 @@
         });
 
         dweetio.listen_for(currentSettings.thing_name, currentSettings.read_key, function (dweet) {
-          updateCallback(dweet)
+          updateCallback(dweet);
         });
       }
+    }
 
     self.onSettingsChanged = function (newSettings) {
       currentSettings = newSettings;
