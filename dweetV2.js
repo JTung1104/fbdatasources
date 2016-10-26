@@ -28,23 +28,38 @@
   var dweetV2Datasource = function (settings, updateCallback) {
     var self = this,
         currentSettings = settings;
+        dweetio.token = currentSettings.account_token;        
+        dweetio[currentSettings.thing_name] = {
+          token: currentSettings.account_token,
+          listening: false
+        };
 
     function getData () {
+      dweetio.token = dweetio[currentSettings[thing_name].token;
+      
       if (currentSettings.account_token && currentSettings.thing_name) {
-        dweetio.token = currentSettings.account_token;
         dweetio.get_latest_dweet_for(currentSettings.thing_name, currentSettings.read_key, function (err, dweet) {
           if (err) console.log(err);
-          updateCallback(dweet);
+          updateCallback(dweet[0]);
         });
 
-        dweetio.listen_for(currentSettings.thing_name, currentSettings.read_key, function (dweet) {
-          updateCallback(dweet);
-        });
+        if (!dweetio[currentSettings.thing_name].listening) {
+          dweetio.listen_for(currentSettings.thing_name, currentSettings.read_key, function (dweet) {
+            updateCallback(dweet);
+          });
+          
+          dweetio[currentSettings.thing_name].listening = true;          
+        }
+
       }
     }
 
     self.onSettingsChanged = function (newSettings) {
+      dweetio.stop_listening_for(currentSettings.thing_name);
       currentSettings = newSettings;
+      dweetio.listen_for(currentSettings.thing_name, currentSettings.read_key, function (dweet) {
+        updateCallback(dweet);
+      });
     };
 
     self.updateNow = function () {
@@ -53,6 +68,7 @@
 
     self.onDispose = function () {
       dweetio.stop_listening_for(currentSettings.thing_name);
+      delete dweetio[currentSettings.thing_name];
     };
   };
 }());
