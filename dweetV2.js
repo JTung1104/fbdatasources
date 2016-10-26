@@ -29,13 +29,14 @@
     var self = this,
         currentSettings = settings;
         dweetio.token = currentSettings.account_token;        
+        
         dweetio[currentSettings.thing_name] = {
           token: currentSettings.account_token,
           listening: false
         };
 
     function getData () {
-      dweetio.token = dweetio[currentSettings[thing_name].token;
+      dweetio.token = dweetio[currentSettings.thing_name].token;
       
       if (currentSettings.account_token && currentSettings.thing_name) {
         dweetio.get_latest_dweet_for(currentSettings.thing_name, currentSettings.read_key, function (err, dweet) {
