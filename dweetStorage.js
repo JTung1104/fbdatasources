@@ -40,38 +40,40 @@
         }
 
         var appendModal = function () {
-            $("body").append(
-                `<div id="modal-overlay">
-                    <div class="modal">
-                    </div>
-                </div>`
-            );
+            setTimeout(function () {
+                $("body").append(
+                    `<div id="modal-overlay">
+                        <div class="modal">
+                        </div>
+                    </div>`
+                );
 
-            appendHeader();
-            appendSection();
-            appendFormRow("Username");
-            appendFormRow("Password");
-            appendFooter();
+                appendHeader();
+                appendSection();
+                appendFormRow("Username");
+                appendFormRow("Password");
+                appendFooter();
 
-            $("#modal-overlay").css({
-                "position": "absolute",
-                "z-index": "100",
-                "top": "0",
-                "left": "0",
-                "height": "100%",
-                "width": "100%",
-                "background": "rgba(0,0,0,.8)",
-                "overflow-y": "auto"
-            });
+                $("#modal-overlay").css({
+                    "position": "absolute",
+                    "z-index": "100",
+                    "top": "0",
+                    "left": "0",
+                    "height": "100%",
+                    "width": "100%",
+                    "background": "rgba(0,0,0,.8)",
+                    "overflow-y": "auto"
+                });
 
-            $("body").on("click", "#login-button", function () {
-                login($("input#text").val(), $("input#password").val());
-                $("#modal-overlay").remove();
-            }); 
+                $("body").on("click", "#login-button", function () {
+                    login($("#un").val(), $("#pw").val());
+                    $("#modal-overlay").remove();
+                }); 
 
-            $("body").on("click", "#cancel-button", function () {
-                $("#modal-overlay").remove();
-            });
+                $("body").on("click", "#cancel-button", function () {
+                    $("#modal-overlay").remove();
+                });
+            }, 250);
         }
 
         var appendHeader = function () {
@@ -84,6 +86,7 @@
 
         var appendFormRow = function (value) {
             var type = value === "Password" ? "password" : "text";
+            var id = value === "Password" ? "pw" : "un";
 
             $("#section-div").append(
                 `<div class="form-row">
@@ -91,7 +94,7 @@
                         <label class="control-label">${value}</label>
                     </div>
                     <div id=${value.toLowerCase()} class="form-value">
-                        <input id=${type} type=${type}>
+                        <input id=${id} type=${type}>
                     </div>
                 </div>
             `);
