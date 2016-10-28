@@ -36,50 +36,80 @@
         var currentSettings = settings;
 
         var getData = function () {
-            currentSettings.session_token ? getDweets() : login();
+            currentSettings.session_token ? getDweets() : appendModal();
         }
 
         var appendModal = function () {
             $("body").append(
                 `<div id="modal-overlay">
                     <div class="modal">
-                        <header><h2 class="title">Dweet.io</h2></header>
-                        <section>
-                            <div>
-                                <div class="form-row>"
-                                    <div class="form-label">
-                                        <label class="control-label">Username</label>
-                                    </div>
-                                    <div id="username" class="form-value">
-                                        <input type="text">
-                                    </div>
-                                </div>
-                                <div class="form-row>"
-                                    <div class="form-label">
-                                        <label class="control-label">Password</label>
-                                    </div>
-                                    <div id="password" class="form-value">
-                                        <input type="password">
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        <footer>
-                            <span id="login-button" class="text-button">Login</span>
-                            <span id="cancel-button" class="text-button">Cancel</span>
-                        </footer>
                     </div>
-                </div>`);
+                </div>`
+            );
+
+            appendHeader();
+            appendSection();
+            appendFormRow("Username");
+            appendFormRow("Password");
+            appendFooter();
+
+            $("#modal-overlay").css({
+                "position": "absolute",
+                "z-index": "100",
+                "top": "0",
+                "left": "0",
+                "height": "100%",
+                "width": "100%",
+                "background": "rgba(0,0,0,.8)",
+                "overflow-y": "auto"
+            });
 
             $("body").on("click", "#login-button", function () {
-                console.log("CLICKED!");
+                login($("input#text").val(), $("input#password").val());
+                $("#modal-overlay").remove();
+            }); 
+
+            $("body").on("click", "#cancel-button", function () {
+                $("#modal-overlay").remove();
             });
         }
 
-        var login = function () {
+        var appendHeader = function () {
+            $(".modal").append(`<header><h2 class="title">Dweet.io</h2></header>`);
+        }
+
+        var appendSection = function () {
+            $(".modal").append(`<section><div id="section-div"></div></section>`);
+        }
+
+        var appendFormRow = function (value) {
+            var type = value === "Password" ? "password" : "text";
+
+            $("#section-div").append(
+                `<div class="form-row">
+                    <div class="form-label">
+                        <label class="control-label">${value}</label>
+                    </div>
+                    <div id=${value.toLowerCase()} class="form-value">
+                        <input id=${type} type=${type}>
+                    </div>
+                </div>
+            `);
+        }
+
+        var appendFooter = function () {
+            $(".modal").append(
+                `<footer>
+                    <span id="login-button" class="text-button">Login</span>
+                    <span id="cancel-button" class="text-button">Cancel</span>
+                </footer>
+            `);
+        }
+
+        var login = function (username, password) {
             var data = JSON.stringify({
-                "username": currentSettings.username,
-                "password": currentSettings.password
+                "username": username,
+                "password": password
             });
 
             $.ajax({
@@ -110,7 +140,7 @@
                     updateCallback(formatData(payload.with));
                 },
                 error: function (e) {
-                    login();
+                    appendModal();
                 }
             });
         }
@@ -129,7 +159,6 @@
         }
 
         this.updateNow = function () {
-            if (!currentSettings.session_token) {appendModal()}
             getData();
         }
 
